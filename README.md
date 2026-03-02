@@ -1,9 +1,3 @@
-<p align="left">
-  <a href="https://github.com/renkonmaster">
-    <img height="20" src="https://komarev.com/ghpvc/?username=renkonmaster" />
-  </a>
-</p>
-
 ## Stats
 ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=renkonmaster&theme=gruvbox)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=renkonmaster&theme=gruvbox)
