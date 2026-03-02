@@ -2,8 +2,6 @@
   <a href="https://github.com/renkonmaster">
     <img height="20" src="https://komarev.com/ghpvc/?username=renkonmaster" />
   </a>
-  <a href="https://github.com/renkonmaster">
-    <img height="20" src="https://img.shields.io/github/followers/renkonmaster?label=follow&logo=github&style=flat" />
 </p>
 
 ## Stats
