@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=b4befe&height=150&section=header&text=renkonmaster&fontSize=50&fontColor=1e1e2e" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=b4befe&height=150&section=header&text=𝕣𝕖𝕟𝕜𝕠𝕟𝕞𝕒𝕤𝕥𝕖𝕣&fontSize=50&fontColor=1e1e2e" />
 </div>
 
 ### 🎓 Affiliation
@@ -34,5 +34,6 @@
 </p>
 
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=b4befe&height=150&section=footer&text=Thanks%20for%20visiting!&fontSize=30&fontColor=191919" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=b4befe&height=150&section=footer&text=𝕋𝕙𝕒𝕟𝕜𝕤%20𝕗𝕠𝕣%20𝕧𝕚𝕤𝕚𝕥𝕚𝕟𝕘!
+&fontSize=30&fontColor=191919" />
 </div>
