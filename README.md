@@ -35,5 +35,5 @@
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=b4befe&height=150&section=footer&text=𝕋𝕙𝕒𝕟𝕜𝕤%20𝕗𝕠𝕣%20𝕧𝕚𝕤𝕚𝕥𝕚𝕟𝕘!
-&fontSize=30&fontColor=191919" />
+&fontSize=30&fontColor=191919" alt="footer"/>
 </div>
