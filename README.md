@@ -4,7 +4,7 @@
 
 ### 🎓 Affiliation
 - **Science Tokyo** (Institute of Science Tokyo) | B1
-- **デジタル創作同好会 traP** (@traPtitech)
+- **デジタル創作同好会 traP** ([@traPtitech](https://github.com/traPtitech))
 
 ### 🧰 Tech Stack
 <p align="left">
