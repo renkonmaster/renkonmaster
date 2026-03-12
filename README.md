@@ -6,7 +6,7 @@
 - **Science Tokyo** (Institute of Science Tokyo) | B1
 - **デジタル創作同好会 traP** ([@traPtitech](https://github.com/traPtitech))
 
-### 🏫 traP SysAd Team の活動
+### 🏫 traP SysAd の活動
 - [traPtitech/manifest](https://github.com/traPtitech/manifest) - Kubernetes manifest管理・インフラ整備
 
 ### 🧰 Tech Stack
