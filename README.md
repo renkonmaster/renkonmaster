@@ -20,17 +20,7 @@
 
 ## 📊 Stats
 <p align="center">
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=renkonmaster&theme=blueberry" />
-</p>
-
-<p align="center">
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=renkonmaster&theme=blueberry" />
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=renkonmaster&theme=blueberry" />
-</p>
-
-<p align="center">
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=renkonmaster&theme=blueberry" />
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=renkonmaster&theme=blueberry&utcOffset=9" />
+  <img src="./generated/profile-stats.svg" alt="GitHub profile statistics" />
 </p>
 
 <div align="center">
