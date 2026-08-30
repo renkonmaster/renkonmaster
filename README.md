@@ -3,7 +3,7 @@
 </div>
 
 ### 🎓 Affiliation
-- **Science Tokyo** (Institute of Science Tokyo) | B1
+- **Science Tokyo** (Institute of Science Tokyo) | B2
 - **デジタル創作同好会 traP** ([@traPtitech](https://github.com/traPtitech))
 
 ### 🏫 traP SysAd の活動
