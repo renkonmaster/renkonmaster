@@ -3,6 +3,7 @@ export type DataSource = "fixture" | "github";
 export type ProfileStats = {
   username: string;
   periodLabel: string;
+  totalStars: number;
   commits: number;
   pullRequests: number;
   issues: number;

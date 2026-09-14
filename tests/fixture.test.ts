@@ -8,7 +8,8 @@ test("fixtureは決定的な集計値を返す", () => {
 
   assert.deepEqual(stats, {
     username: "renkonmaster",
-    periodLabel: "Last 12 months",
+    periodLabel: "All time",
+    totalStars: 24,
     commits: 1284,
     pullRequests: 76,
     issues: 42,
@@ -20,6 +21,7 @@ test("fixtureはユーザー名だけを差し替える", () => {
   const stats = getFixtureStats("example-user");
 
   assert.equal(stats.username, "example-user");
+  assert.equal(stats.totalStars, 24);
   assert.equal(stats.commits, 1284);
   assert.equal(stats.pullRequests, 76);
   assert.equal(stats.issues, 42);

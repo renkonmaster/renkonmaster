@@ -19,7 +19,8 @@ test("writeGeneratedCardはfixtureのSVGを指定ディレクトリへ書き込�
       },
       {
         username: "renkonmaster",
-        periodLabel: "Last 12 months",
+        periodLabel: "All time",
+        totalStars: 24,
         commits: 1284,
         pullRequests: 76,
         issues: 42,

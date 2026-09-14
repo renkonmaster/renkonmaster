@@ -5,30 +5,36 @@ import { renderProfileStatsSvg } from "../src/render/svg.ts";
 
 test("Profile Stats SVGは固定サイズとメトリクスを含む", () => {
   const svg = renderProfileStatsSvg({
-    title: "Profile Stats",
-    periodLabel: "Last 12 months",
+    title: "Stats",
+    periodLabel: "All time",
     rows: [
-      { label: "Commits", value: "1,284" },
-      { label: "Pull Requests", value: "76" },
-      { label: "Issues", value: "42" },
-      { label: "Repositories", value: "18" },
+      { label: "Total Stars:", value: "24" },
+      { label: "Total Commits:", value: "1,284" },
+      { label: "Total PRs:", value: "76" },
+      { label: "Total Issues:", value: "42" },
+      { label: "Contributed to:", value: "18" },
     ],
   });
 
   assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
-  assert.match(svg, /width="520"/);
-  assert.match(svg, /height="180"/);
-  assert.match(svg, /viewBox="0 0 520 180"/);
+  assert.match(svg, /width="340"/);
+  assert.match(svg, /height="200"/);
+  assert.match(svg, /viewBox="0 0 340 200"/);
+  assert.match(svg, /#242938/);
+  assert.match(svg, /#82AAFF/);
+  assert.match(svg, /#27E8A7/);
+  assert.match(svg, /#89DDFF/);
+  assert.match(svg, /font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif"/);
   assert.match(svg, /<rect/);
   assert.match(svg, /<text/);
   assert.match(svg, /1,284/);
-  assert.match(svg, /Pull Requests/);
+  assert.match(svg, /Total PRs:/);
 });
 
 test("SVGテキストのXML特殊文字をエスケープする", () => {
   const svg = renderProfileStatsSvg({
     title: `A & <card> " '`,
-    periodLabel: "Last 12 months",
+    periodLabel: "All time",
     rows: [{ label: "A & <metric>", value: `1 " 2` }],
   });
 

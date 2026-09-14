@@ -3,10 +3,11 @@ import { test } from "node:test";
 
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
 
-test("ProfileStatsを4行のカードモデルへ変換する", () => {
+test("ProfileStatsを5行のカードモデルへ変換する", () => {
   const model = buildProfileStatsCard({
     username: "renkonmaster",
-    periodLabel: "Last 12 months",
+    periodLabel: "All time",
+    totalStars: 24,
     commits: 1284,
     pullRequests: 76,
     issues: 42,
@@ -14,13 +15,14 @@ test("ProfileStatsを4行のカードモデルへ変換する", () => {
   });
 
   assert.deepEqual(model, {
-    title: "Profile Stats",
-    periodLabel: "Last 12 months",
+    title: "Stats",
+    periodLabel: "All time",
     rows: [
-      { label: "Commits", value: "1,284" },
-      { label: "Pull Requests", value: "76" },
-      { label: "Issues", value: "42" },
-      { label: "Repositories", value: "18" },
+      { label: "Total Stars:", value: "24" },
+      { label: "Total Commits:", value: "1,284" },
+      { label: "Total PRs:", value: "76" },
+      { label: "Total Issues:", value: "42" },
+      { label: "Contributed to:", value: "18" },
     ],
   });
 });
