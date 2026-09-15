@@ -261,6 +261,7 @@ test("GitHubリポジトリのprimary languageをページングして件数集�
             pageInfo: { hasNextPage: true, endCursor: "repo-cursor" },
             nodes: [
               {
+                isPrivate: false,
                 primaryLanguage: { name: "TypeScript", color: "#3178c6" },
               },
             ],
@@ -275,6 +276,11 @@ test("GitHubリポジトリのprimary languageをページングして件数集�
             pageInfo: { hasNextPage: false, endCursor: null },
             nodes: [
               {
+                isPrivate: true,
+                primaryLanguage: { name: "TypeScript", color: "#3178c6" },
+              },
+              {
+                isPrivate: false,
                 primaryLanguage: { name: "Shell", color: null },
               },
             ],
@@ -290,6 +296,7 @@ test("GitHubリポジトリのprimary languageをページングして件数集�
       variables: { after: string | null };
     };
     assert.match(body.query, /primaryLanguage \{/);
+    assert.match(body.query, /privacy: PUBLIC/);
     assert.equal(body.variables.after, call === 0 ? null : "repo-cursor");
     return new Response(JSON.stringify(payloads[call++]), { status: 200 });
   };
@@ -321,6 +328,7 @@ test("GitHub commit contributionsを年別repositoryのprimary languageへ集計
                   ? [
                       {
                         repository: {
+                          isPrivate: false,
                           nameWithOwner: "owner/ts-one",
                           primaryLanguage: { name: "TypeScript", color: "#3178c6" },
                         },
@@ -328,6 +336,15 @@ test("GitHub commit contributionsを年別repositoryのprimary languageへ集計
                       },
                       {
                         repository: {
+                          isPrivate: true,
+                          nameWithOwner: "owner/private",
+                          primaryLanguage: { name: "Go", color: "#00ADD8" },
+                        },
+                        contributions: { totalCount: 99 },
+                      },
+                      {
+                        repository: {
+                          isPrivate: false,
                           nameWithOwner: "owner/no-language",
                           primaryLanguage: null,
                         },
@@ -337,6 +354,7 @@ test("GitHub commit contributionsを年別repositoryのprimary languageへ集計
                   : [
                       {
                         repository: {
+                          isPrivate: false,
                           nameWithOwner: "owner/ts-two",
                           primaryLanguage: { name: "TypeScript", color: "#3178c6" },
                         },
@@ -360,6 +378,7 @@ test("GitHub commit contributionsを年別repositoryのprimary languageへ集計
   assert.match(requests[1]?.query ?? "", /commitContributionsByRepository\(maxRepositories: 100\)/);
   assert.match(requests[1]?.query ?? "", /primaryLanguage \{\s*name\s*color\s*\}/);
   assert.match(requests[1]?.query ?? "", /nameWithOwner/);
+  assert.match(requests[1]?.query ?? "", /isPrivate/);
   assert.match(requests[1]?.query ?? "", /contributions \{\s*totalCount\s*\}/);
   assert.deepEqual(breakdown, {
     total: 13,
@@ -381,6 +400,7 @@ test("GitHub commit履歴をUTCの24時間bucketへ集計する", async () => {
         ? {
             data: {
               repository: {
+                isPrivate: false,
                 defaultBranchRef: {
                   target: {
                     history: {
@@ -399,6 +419,7 @@ test("GitHub commit履歴をUTCの24時間bucketへ集計する", async () => {
                 commitContributionsByRepository: [
                   {
                     repository: {
+                      isPrivate: false,
                       nameWithOwner: "owner/repo",
                       defaultBranchRef: {
                         target: {
@@ -435,4 +456,62 @@ test("GitHub commit履歴をUTCの24時間bucketへ集計する", async () => {
   assert.deepEqual(productiveTime.hours[22], { hour: 22, contributions: 1 });
   assert.deepEqual(productiveTime.hours[1], { hour: 1, contributions: 1 });
   assert.equal(productiveTime.total, 4);
+});
+
+test("private repositoryのcommit履歴はProductive Timeへ含めない", async () => {
+  const fetchImpl: typeof fetch = async (_input, init) => {
+    const body = JSON.parse(String(init?.body)) as { query: string };
+    const payload = body.query.includes("ProductiveTimeUser")
+      ? { data: { user: { id: "user-id" } } }
+      : {
+          data: {
+            user: {
+              contributionsCollection: {
+                commitContributionsByRepository: [
+                  {
+                    repository: {
+                      isPrivate: true,
+                      nameWithOwner: "owner/private",
+                      defaultBranchRef: {
+                        target: {
+                          history: {
+                            nodes: [{ committedDate: "2026-01-02T09:12:00Z" }],
+                            pageInfo: { hasNextPage: false, endCursor: null },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  {
+                    repository: {
+                      isPrivate: false,
+                      nameWithOwner: "owner/public",
+                      defaultBranchRef: {
+                        target: {
+                          history: {
+                            nodes: [{ committedDate: "2026-01-02T10:12:00Z" }],
+                            pageInfo: { hasNextPage: false, endCursor: null },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        };
+    return new Response(JSON.stringify(payload), { status: 200 });
+  };
+
+  const productiveTime = await fetchGithubProductiveTime(
+    "renkonmaster",
+    "unit-test-token",
+    new Date("2026-08-19T00:00:00.000Z"),
+    fetchImpl,
+    0,
+  );
+
+  assert.equal(productiveTime.total, 1);
+  assert.deepEqual(productiveTime.hours[10], { hour: 10, contributions: 1 });
 });

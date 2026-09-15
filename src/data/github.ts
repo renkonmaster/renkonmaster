@@ -96,6 +96,7 @@ const repositoryLanguagesQuery = `
         first: 100
         after: $after
         ownerAffiliations: OWNER
+        privacy: PUBLIC
         isFork: false
       ) {
         pageInfo {
@@ -129,6 +130,7 @@ const commitLanguagesQuery = `
       contributionsCollection(from: $from, to: $to) {
         commitContributionsByRepository(maxRepositories: 100) {
           repository {
+            isPrivate
             primaryLanguage {
               name
               color
@@ -158,6 +160,7 @@ const productiveTimeQuery = `
       contributionsCollection {
         commitContributionsByRepository(maxRepositories: 100) {
           repository {
+            isPrivate
             nameWithOwner
             defaultBranchRef {
               target {
@@ -184,6 +187,7 @@ const productiveTimeQuery = `
 const productiveTimeRepositoryQuery = `
   query ProductiveTimeRepository($owner: String!, $name: String!, $userId: ID!, $since: GitTimestamp!, $until: GitTimestamp!, $after: String) {
     repository(owner: $owner, name: $name) {
+      isPrivate
       defaultBranchRef {
         target {
           ... on Commit {
@@ -493,6 +497,7 @@ type RepositoryLanguagePayload = {
       repositories?: {
         pageInfo?: { hasNextPage?: unknown; endCursor?: unknown };
         nodes?: Array<{
+          isPrivate?: unknown;
           primaryLanguage?: { name?: unknown; color?: unknown } | null;
         }>;
       };
@@ -506,6 +511,7 @@ type ContributionLanguagePayload = {
       contributionsCollection?: {
         commitContributionsByRepository?: Array<{
           repository?: {
+            isPrivate?: unknown;
             primaryLanguage?: { name?: unknown; color?: unknown } | null;
           } | null;
           contributions?: { totalCount?: unknown };
@@ -520,6 +526,7 @@ type ProductiveTimePayload = {
     user?: {
       contributionsCollection?: { commitContributionsByRepository?: Array<{
         repository?: {
+          isPrivate?: unknown;
           nameWithOwner?: unknown;
           defaultBranchRef?: {
             target?: { history?: ProductiveCommitHistory } | null;
@@ -542,6 +549,7 @@ type ProductiveCommitHistory = {
 type ProductiveTimeRepositoryPayload = {
   data?: {
     repository?: {
+      isPrivate?: unknown;
       defaultBranchRef?: {
         target?: { history?: ProductiveCommitHistory } | null;
       } | null;
@@ -668,6 +676,7 @@ export async function fetchGithubRepoLanguages(
       throw new Error("GitHub GraphQL response missing repository languages");
     }
     for (const repository of repositories.nodes) {
+      if (repository.isPrivate !== false) continue;
       const language = repository.primaryLanguage;
       if (typeof language?.name === "string") {
         addLanguage(totals, language.name, typeof language.color === "string" ? language.color : null, 1);
@@ -703,6 +712,7 @@ async function fetchCommitLanguageYears(
     const repositories = user.contributionsCollection?.commitContributionsByRepository;
     if (!Array.isArray(repositories)) throw new Error("GitHub GraphQL response missing commit languages");
     for (const repository of repositories) {
+      if (repository.repository?.isPrivate !== false) continue;
       const count = repository.contributions?.totalCount;
       if (!isNonNegativeInteger(count)) continue;
       const language = repository.repository?.primaryLanguage;
@@ -766,6 +776,7 @@ export async function fetchGithubProductiveTime(
   };
   for (const repository of repositories) {
     const repositoryData = repository.repository;
+    if (repositoryData?.isPrivate !== false) continue;
     const history = repositoryData?.defaultBranchRef?.target?.history;
     addCommits(history);
 
@@ -793,7 +804,9 @@ export async function fetchGithubProductiveTime(
         until: now.toISOString(),
         after: cursor,
       })) as ProductiveTimeRepositoryPayload;
-      const pageHistory = pagePayload.data?.repository?.defaultBranchRef?.target?.history;
+      const pageRepository = pagePayload.data?.repository;
+      if (pageRepository?.isPrivate !== false) break;
+      const pageHistory = pageRepository.defaultBranchRef?.target?.history;
       addCommits(pageHistory);
       pageInfo = pageHistory?.pageInfo;
     }
