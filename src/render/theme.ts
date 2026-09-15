@@ -32,6 +32,12 @@ export const UPSTREAM_VISUAL_CONTRACT = {
     borderRadius: 5,
     borderWidth: 1,
   },
+  variants: {
+    statsHiddenLogoWidth: 250,
+    profileDetailsAdditionalTitleLineHeight: 24,
+    profileDetailsTallTitleLengthThreshold: 30,
+    profileDetailsTallTitleCaptionY: 140,
+  },
   donut: {
     margin: 10,
     radius: 70,

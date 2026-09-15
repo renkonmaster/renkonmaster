@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
+import { getFixtureStats } from "../src/data/fixture.ts";
+import { renderProfileStatsSvg } from "../src/render/svg.ts";
 import {
   BLUEBERRY_THEME,
   CARD_FONT,
@@ -40,6 +43,12 @@ test("5カードの基準寸法と共通タイトル位置を保つ", () => {
     borderInset: 1,
     borderRadius: 5,
     borderWidth: 1,
+  });
+  assert.deepEqual(UPSTREAM_VISUAL_CONTRACT.variants, {
+    statsHiddenLogoWidth: 250,
+    profileDetailsAdditionalTitleLineHeight: 24,
+    profileDetailsTallTitleLengthThreshold: 30,
+    profileDetailsTallTitleCaptionY: 140,
   });
 });
 
@@ -120,4 +129,11 @@ test("共通カードシェルは自己完結したSVGを作る", () => {
       `</svg>\n`,
   );
   assert.doesNotMatch(svg, /(?:href|xlink:href|<image|<script)/);
+});
+
+test("Stats rendererはfixture SVGをbyte-for-byte維持する", () => {
+  const expected = readFileSync(new URL("../generated/profile-stats.svg", import.meta.url), "utf8");
+  const actual = renderProfileStatsSvg(buildProfileStatsCard(getFixtureStats("renkonmaster")));
+
+  assert.equal(actual, expected);
 });
