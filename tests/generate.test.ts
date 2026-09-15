@@ -4,7 +4,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-import { writeGeneratedCard } from "../src/generate.ts";
+import { writeGeneratedCard, writeGeneratedCards } from "../src/generate.ts";
+import {
+  getFixtureCommitLanguages,
+  getFixtureProductiveTime,
+  getFixtureProfileDetails,
+  getFixtureRepoLanguages,
+  getFixtureStats,
+} from "../src/data/fixture.ts";
 
 test("writeGeneratedCardはfixtureのSVGを指定ディレクトリへ書き込む", async () => {
   const outputDir = await mkdtemp(join(tmpdir(), "profile-card-test-"));
@@ -32,6 +39,41 @@ test("writeGeneratedCardはfixtureのSVGを指定ディレクトリへ書き込�
     const svg = await readFile(outputPath, "utf8");
     assert.match(svg, /^<svg/);
     assert.match(svg, /1,284/);
+  } finally {
+    await rm(outputDir, { recursive: true, force: true });
+  }
+});
+
+test("writeGeneratedCardsは5種類のfixture SVGを同じ出力先へ書き込む", async () => {
+  const outputDir = await mkdtemp(join(tmpdir(), "profile-cards-test-"));
+
+  try {
+    const paths = await writeGeneratedCards(
+      {
+        dataSource: "fixture",
+        username: "renkonmaster",
+        token: undefined,
+        outputDir,
+      },
+      {
+        stats: getFixtureStats("renkonmaster"),
+        profileDetails: getFixtureProfileDetails("renkonmaster"),
+        repoLanguages: getFixtureRepoLanguages("renkonmaster"),
+        commitLanguages: getFixtureCommitLanguages("renkonmaster"),
+        productiveTime: getFixtureProductiveTime("renkonmaster"),
+      },
+    );
+
+    assert.deepEqual(paths.map((path) => path.split("/").pop()), [
+      "profile-stats.svg",
+      "profile-details.svg",
+      "most-commit-language.svg",
+      "repos-per-language.svg",
+      "productive-time.svg",
+    ]);
+    for (const path of paths) {
+      assert.match(await readFile(path, "utf8"), /^<svg/);
+    }
   } finally {
     await rm(outputDir, { recursive: true, force: true });
   }

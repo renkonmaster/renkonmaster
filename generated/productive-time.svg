@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="200" viewBox="0 0 520 200">
+  <rect x="1" y="1" width="518" height="198" rx="5" fill="#242938" />
+  <text x="25" y="35" fill="#82AAFF" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="20" font-weight="700">Productive Time</text>
+  <text x="25" y="58" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="12">796 contributions by hour</text>
+  <rect x="25" y="156.88" width="14" height="3.13" rx="2" fill="rgba(39,232,167,0.2734375)"><title>0:00 — 4</title></rect>
+  <text x="32" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">0</text>
+  <rect x="45" y="158.00" width="14" height="2.00" rx="2" fill="rgba(39,232,167,0.26171875)"><title>1:00 — 2</title></rect>
+  <text x="52" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">1</text>
+  <rect x="65" y="158.00" width="14" height="2.00" rx="2" fill="rgba(39,232,167,0.255859375)"><title>2:00 — 1</title></rect>
+  <text x="72" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">2</text>
+  <rect x="85" y="158.00" width="14" height="2.00" rx="2" fill="#31384D"><title>3:00 — 0</title></rect>
+  <text x="92" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">3</text>
+  <rect x="105" y="158.00" width="14" height="2.00" rx="2" fill="#31384D"><title>4:00 — 0</title></rect>
+  <text x="112" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">4</text>
+  <rect x="125" y="158.00" width="14" height="2.00" rx="2" fill="rgba(39,232,167,0.255859375)"><title>5:00 — 1</title></rect>
+  <text x="132" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">5</text>
+  <rect x="145" y="150.63" width="14" height="9.38" rx="2" fill="rgba(39,232,167,0.3203125)"><title>6:00 — 12</title></rect>
+  <text x="152" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">6</text>
+  <rect x="165" y="136.56" width="14" height="23.44" rx="2" fill="rgba(39,232,167,0.42578125)"><title>7:00 — 30</title></rect>
+  <text x="172" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">7</text>
+  <rect x="185" y="94.38" width="14" height="65.63" rx="2" fill="rgba(39,232,167,0.7421875)"><title>8:00 — 84</title></rect>
+  <text x="192" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">8</text>
+  <rect x="205" y="60.00" width="14" height="100.00" rx="2" fill="rgba(39,232,167,1)"><title>9:00 — 128</title></rect>
+  <text x="212" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">9</text>
+  <rect x="225" y="85.00" width="14" height="75.00" rx="2" fill="rgba(39,232,167,0.8125)"><title>10:00 — 96</title></rect>
+  <text x="232" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">10</text>
+  <rect x="245" y="103.75" width="14" height="56.25" rx="2" fill="rgba(39,232,167,0.671875)"><title>11:00 — 72</title></rect>
+  <text x="252" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">11</text>
+  <rect x="265" y="110.00" width="14" height="50.00" rx="2" fill="rgba(39,232,167,0.625)"><title>12:00 — 64</title></rect>
+  <text x="272" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">12</text>
+  <rect x="285" y="114.69" width="14" height="45.31" rx="2" fill="rgba(39,232,167,0.58984375)"><title>13:00 — 58</title></rect>
+  <text x="292" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">13</text>
+  <rect x="305" y="121.72" width="14" height="38.28" rx="2" fill="rgba(39,232,167,0.537109375)"><title>14:00 — 49</title></rect>
+  <text x="312" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">14</text>
+  <rect x="325" y="126.41" width="14" height="33.59" rx="2" fill="rgba(39,232,167,0.501953125)"><title>15:00 — 43</title></rect>
+  <text x="332" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">15</text>
+  <rect x="345" y="133.44" width="14" height="26.56" rx="2" fill="rgba(39,232,167,0.44921875)"><title>16:00 — 34</title></rect>
+  <text x="352" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">16</text>
+  <rect x="365" y="135.78" width="14" height="24.22" rx="2" fill="rgba(39,232,167,0.431640625)"><title>17:00 — 31</title></rect>
+  <text x="372" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">17</text>
+  <rect x="385" y="138.13" width="14" height="21.88" rx="2" fill="rgba(39,232,167,0.4140625)"><title>18:00 — 28</title></rect>
+  <text x="392" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">18</text>
+  <rect x="405" y="145.16" width="14" height="14.84" rx="2" fill="rgba(39,232,167,0.361328125)"><title>19:00 — 19</title></rect>
+  <text x="412" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">19</text>
+  <rect x="425" y="148.28" width="14" height="11.72" rx="2" fill="rgba(39,232,167,0.337890625)"><title>20:00 — 15</title></rect>
+  <text x="432" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">20</text>
+  <rect x="445" y="150.63" width="14" height="9.38" rx="2" fill="rgba(39,232,167,0.3203125)"><title>21:00 — 12</title></rect>
+  <text x="452" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">21</text>
+  <rect x="465" y="153.75" width="14" height="6.25" rx="2" fill="rgba(39,232,167,0.296875)"><title>22:00 — 8</title></rect>
+  <text x="472" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">22</text>
+  <rect x="485" y="156.09" width="14" height="3.91" rx="2" fill="rgba(39,232,167,0.279296875)"><title>23:00 — 5</title></rect>
+  <text x="492" y="177" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="8" text-anchor="middle">23</text>
+</svg>

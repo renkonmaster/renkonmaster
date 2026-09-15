@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="200" viewBox="0 0 420 200">
+  <rect x="1" y="1" width="418" height="198" rx="5" fill="#242938" />
+  <text x="25" y="35" fill="#82AAFF" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="20" font-weight="700">Top Languages by Commit</text>
+  <circle cx="105" cy="112" r="58" fill="none" stroke="#31384D" stroke-width="22" />
+  <circle cx="105" cy="112" r="58" fill="none" stroke="#3178c6" stroke-width="22" stroke-dasharray="225.41736978335013 139.0073780330659" stroke-dashoffset="0" transform="rotate(-90 105 112)" />
+  <circle cx="105" cy="112" r="58" fill="none" stroke="#00ADD8" stroke-width="22" stroke-dasharray="139.0073780330659 225.41736978335013" stroke-dashoffset="-225.41736978335013" transform="rotate(-90 105 112)" />
+  <text x="105" y="117" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="16" text-anchor="middle">2</text>
+  <circle cx="220" cy="68" r="5" fill="#3178c6" />
+  <text x="234" y="72" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">TypeScript</text>
+  <text x="390" y="72" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="12" text-anchor="end">720</text>
+  <circle cx="220" cy="91" r="5" fill="#00ADD8" />
+  <text x="234" y="95" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">Go</text>
+  <text x="390" y="95" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="12" text-anchor="end">444</text>
+</svg>

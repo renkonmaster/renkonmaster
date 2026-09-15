@@ -30,23 +30,22 @@ jobs:
       - name: Type-check generator
         run: npm run typecheck
 
-      - name: Generate GitHub profile card
+      - name: Generate GitHub profile cards
         env:
           DATA_SOURCE: github
           GITHUB_USERNAME: renkonmaster
           GITHUB_TOKEN: ${{ secrets.PROFILE_GITHUB_TOKEN }}
         run: npm run generate
 
-      - name: Commit changed generated card
+      - name: Commit changed generated cards
         run: |
-          if git diff --quiet -- generated/profile-stats.svg \
-            && git ls-files --error-unmatch generated/profile-stats.svg >/dev/null 2>&1; then
+          git add generated/*.svg
+          if git diff --cached --quiet; then
             echo "Generated card is unchanged."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add generated/profile-stats.svg
-          git commit -m "chore: update generated profile card"
+          git commit -m "chore: update generated profile cards"
           git push

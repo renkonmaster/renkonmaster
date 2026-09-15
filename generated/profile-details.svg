@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="220" viewBox="0 0 600 220">
+  <rect x="1" y="1" width="598" height="218" rx="5" fill="#242938" />
+  <text x="25" y="35" fill="#82AAFF" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="20" font-weight="700">@renkonmaster</text>
+  <text x="25" y="58" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="12">renkonmaster</text>
+  <text x="25" y="92" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">14 Contributions on GitHub</text>
+  <text x="25" y="117" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">32 Public Repos</text>
+  <text x="25" y="142" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">Joined GitHub 2016-02-27T00:00:00.000Z</text>
+  <text x="25" y="167" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">https://github.com/renkonmaster</text>
+  <rect x="315" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,0.5714285714285714)"><title>2026-08-17: 3</title></rect>
+  <rect x="326" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,1)"><title>2026-08-18: 7</title></rect>
+  <rect x="337" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,0.6785714285714286)"><title>2026-08-19: 4</title></rect>
+</svg>

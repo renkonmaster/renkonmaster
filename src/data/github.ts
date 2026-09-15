@@ -1,4 +1,11 @@
-import type { ProfileStats } from "../types.ts";
+import type {
+  ContributionDay,
+  LanguageBreakdown,
+  LanguageTotal,
+  ProductiveTime,
+  ProfileDetails,
+  ProfileStats,
+} from "../types.ts";
 
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
 const YEAR_BATCH_SIZE = 5;
@@ -50,6 +57,147 @@ const commitContributionsQuery = `
     user(login: $login) {
       contributionsCollection(from: $from, to: $to) {
         totalCommitContributions
+      }
+    }
+  }
+`;
+
+const profileDetailsYearsQuery = `
+  query ProfileDetailsYears($login: String!) {
+    user(login: $login) {
+      login
+      name
+      createdAt
+      email
+      websiteUrl
+      repositories(first: 1, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false) {
+        totalCount
+      }
+      contributionsCollection {
+        contributionYears
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              date
+              contributionCount
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const repositoryLanguagesQuery = `
+  query RepositoryLanguages($login: String!, $after: String) {
+    user(login: $login) {
+      repositories(
+        first: 100
+        after: $after
+        ownerAffiliations: OWNER
+        isFork: false
+      ) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          primaryLanguage {
+            name
+            color
+          }
+        }
+      }
+    }
+  }
+`;
+
+const contributionYearsQuery = `
+  query ContributionYears($login: String!) {
+    user(login: $login) {
+      contributionsCollection {
+        contributionYears
+      }
+    }
+  }
+`;
+
+const commitLanguagesQuery = `
+  query CommitLanguagesByYear($login: String!, $from: DateTime!, $to: DateTime!) {
+    user(login: $login) {
+      contributionsCollection(from: $from, to: $to) {
+        commitContributionsByRepository(maxRepositories: 100) {
+          repository {
+            primaryLanguage {
+              name
+              color
+            }
+            nameWithOwner
+          }
+          contributions {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+`;
+
+const productiveTimeUserQuery = `
+  query ProductiveTimeUser($login: String!) {
+    user(login: $login) {
+      id
+    }
+  }
+`;
+
+const productiveTimeQuery = `
+  query ProductiveTime($login: String!, $userId: ID!, $since: GitTimestamp!, $until: GitTimestamp!) {
+    user(login: $login) {
+      contributionsCollection {
+        commitContributionsByRepository(maxRepositories: 100) {
+          repository {
+            nameWithOwner
+            defaultBranchRef {
+              target {
+                ... on Commit {
+                  history(first: 100, since: $since, until: $until, author: { id: $userId }) {
+                    nodes {
+                      committedDate
+                    }
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const productiveTimeRepositoryQuery = `
+  query ProductiveTimeRepository($owner: String!, $name: String!, $userId: ID!, $since: GitTimestamp!, $until: GitTimestamp!, $after: String) {
+    repository(owner: $owner, name: $name) {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            history(first: 100, after: $after, since: $since, until: $until, author: { id: $userId }) {
+              nodes {
+                committedDate
+              }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -114,6 +262,10 @@ function isContributionYears(value: unknown): value is ContributionYears {
   if (typeof value !== "object" || value === null) return false;
   const years = (value as Record<string, unknown>).contributionYears;
   return Array.isArray(years) && years.every((year) => Number.isInteger(year) && year >= 2008);
+}
+
+function isContributionYearList(value: unknown): value is number[] {
+  return Array.isArray(value) && value.every((year) => Number.isInteger(year) && year >= 2008);
 }
 
 function isRepositorySummary(value: unknown): value is RepositorySummary {
@@ -313,5 +465,341 @@ export async function fetchGithubStats(
     pullRequests,
     issues,
     repositoriesContributed,
+  };
+}
+
+type ProfileDetailsPayload = {
+  data?: {
+    user?: {
+      login?: unknown;
+      name?: unknown;
+      createdAt?: unknown;
+      email?: unknown;
+      websiteUrl?: unknown;
+      repositories?: { totalCount?: unknown };
+      contributionsCollection?: ContributionYears & { contributionCalendar?: ContributionCalendar };
+    } | null;
+  };
+};
+
+type ContributionCalendar = {
+  totalContributions: number;
+  weeks: Array<{ contributionDays: ContributionDay[] }>;
+};
+
+type RepositoryLanguagePayload = {
+  data?: {
+    user?: {
+      repositories?: {
+        pageInfo?: { hasNextPage?: unknown; endCursor?: unknown };
+        nodes?: Array<{
+          primaryLanguage?: { name?: unknown; color?: unknown } | null;
+        }>;
+      };
+    } | null;
+  };
+};
+
+type ContributionLanguagePayload = {
+  data?: {
+    user?: {
+      contributionsCollection?: {
+        commitContributionsByRepository?: Array<{
+          repository?: {
+            primaryLanguage?: { name?: unknown; color?: unknown } | null;
+          } | null;
+          contributions?: { totalCount?: unknown };
+        }>;
+      };
+    } | null;
+  };
+};
+
+type ProductiveTimePayload = {
+  data?: {
+    user?: {
+      contributionsCollection?: { commitContributionsByRepository?: Array<{
+        repository?: {
+          nameWithOwner?: unknown;
+          defaultBranchRef?: {
+            target?: { history?: ProductiveCommitHistory } | null;
+          } | null;
+        } | null;
+      }> };
+    } | null;
+  };
+};
+
+type ProductiveTimeUserPayload = {
+  data?: { user?: { id?: unknown } | null };
+};
+
+type ProductiveCommitHistory = {
+  nodes?: Array<{ committedDate?: unknown }>;
+  pageInfo?: { hasNextPage?: unknown; endCursor?: unknown };
+};
+
+type ProductiveTimeRepositoryPayload = {
+  data?: {
+    repository?: {
+      defaultBranchRef?: {
+        target?: { history?: ProductiveCommitHistory } | null;
+      } | null;
+    } | null;
+  };
+};
+
+function isContributionDay(value: unknown): value is ContributionDay {
+  if (typeof value !== "object" || value === null) return false;
+  const day = value as Record<string, unknown>;
+  return typeof day.date === "string" && isNonNegativeInteger(day.contributionCount);
+}
+
+function isContributionCalendar(value: unknown): value is ContributionCalendar {
+  if (typeof value !== "object" || value === null) return false;
+  const calendar = value as Record<string, unknown>;
+  if (!isNonNegativeInteger(calendar.totalContributions) || !Array.isArray(calendar.weeks)) return false;
+  return calendar.weeks.every((week) => {
+    if (typeof week !== "object" || week === null) return false;
+    const days = (week as Record<string, unknown>).contributionDays;
+    return Array.isArray(days) && days.every(isContributionDay);
+  });
+}
+
+function requireUser<T extends { data?: { user?: unknown | null } }>(payload: T): NonNullable<NonNullable<T["data"]>["user"]> {
+  const user = payload.data?.user;
+  if (!user) throw new Error("GitHub user not found");
+  return user as NonNullable<NonNullable<T["data"]>["user"]>;
+}
+
+async function fetchContributionYears(
+  username: string,
+  token: string,
+  fetchImpl: typeof fetch,
+): Promise<number[]> {
+  const payload = (await requestGraphql(fetchImpl, token, contributionYearsQuery, { login: username })) as {
+    data?: { user?: { contributionsCollection?: ContributionYears } | null };
+  };
+  const user = requireUser(payload);
+  const years = user.contributionsCollection?.contributionYears;
+  if (!isContributionYearList(years)) {
+    throw new Error("GitHub GraphQL response missing contribution years");
+  }
+  return [...new Set(years)].sort((a, b) => b - a);
+}
+
+export async function fetchGithubProfileDetails(
+  username: string,
+  token: string,
+  now: Date = new Date(),
+  fetchImpl: typeof fetch = fetch,
+): Promise<ProfileDetails> {
+  const payload = (await requestGraphql(fetchImpl, token, profileDetailsYearsQuery, {
+    login: username,
+  })) as ProfileDetailsPayload;
+  const user = requireUser(payload);
+  const years = user.contributionsCollection?.contributionYears;
+  const calendar = user.contributionsCollection?.contributionCalendar;
+  if (!isContributionYearList(years) || !isContributionCalendar(calendar)) {
+    throw new Error("GitHub GraphQL response missing contribution calendar");
+  }
+  if (
+    typeof user.login !== "string" ||
+    typeof user.createdAt !== "string" ||
+    !user.repositories ||
+    !isNonNegativeInteger(user.repositories.totalCount)
+  ) {
+    throw new Error("GitHub GraphQL response missing profile details");
+  }
+
+  const contributionDays: ContributionDay[] = calendar.weeks.flatMap((week) => week.contributionDays);
+  contributionDays.sort((left, right) => left.date.localeCompare(right.date));
+  const contact = typeof user.email === "string" && user.email
+    ? user.email
+    : typeof user.websiteUrl === "string" && user.websiteUrl
+      ? user.websiteUrl
+      : undefined;
+
+  return {
+    username: user.login,
+    title: typeof user.name === "string" && user.name ? user.name : `@${user.login}`,
+    totalContributions: calendar.totalContributions,
+    publicRepositories: user.repositories.totalCount,
+    joinedAt: user.createdAt,
+    ...(contact ? { contact } : {}),
+    contributionDays,
+  };
+}
+
+function addLanguage(total: Map<string, LanguageTotal>, name: string, color: string | null, value: number): void {
+  const existing = total.get(name);
+  if (existing) {
+    existing.value += value;
+  } else {
+    total.set(name, { name, color, value });
+  }
+}
+
+function toLanguageBreakdown(total: Map<string, LanguageTotal>): LanguageBreakdown {
+  const languages = [...total.values()].sort((left, right) => right.value - left.value);
+  return {
+    total: languages.reduce((sum, language) => sum + language.value, 0),
+    languages,
+  };
+}
+
+export async function fetchGithubRepoLanguages(
+  username: string,
+  token: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<LanguageBreakdown> {
+  const totals = new Map<string, LanguageTotal>();
+  let after: string | null = null;
+  const seenCursors = new Set<string>();
+
+  while (true) {
+    const payload = (await requestGraphql(fetchImpl, token, repositoryLanguagesQuery, {
+      login: username,
+      after,
+    })) as RepositoryLanguagePayload;
+    const user = requireUser(payload);
+    const repositories = user.repositories;
+    if (!repositories || !Array.isArray(repositories.nodes) || typeof repositories.pageInfo !== "object" || repositories.pageInfo === null) {
+      throw new Error("GitHub GraphQL response missing repository languages");
+    }
+    for (const repository of repositories.nodes) {
+      const language = repository.primaryLanguage;
+      if (typeof language?.name === "string") {
+        addLanguage(totals, language.name, typeof language.color === "string" ? language.color : null, 1);
+      }
+    }
+
+    const pageInfo = repositories.pageInfo as { hasNextPage?: unknown; endCursor?: unknown };
+    if (pageInfo.hasNextPage !== true) break;
+    if (typeof pageInfo.endCursor !== "string" || !pageInfo.endCursor || seenCursors.has(pageInfo.endCursor)) {
+      throw new Error("GitHub GraphQL response missing repository language cursor");
+    }
+    seenCursors.add(pageInfo.endCursor);
+    after = pageInfo.endCursor;
+  }
+
+  return toLanguageBreakdown(totals);
+}
+
+async function fetchCommitLanguageYears(
+  username: string,
+  token: string,
+  years: number[],
+  now: Date,
+  fetchImpl: typeof fetch,
+): Promise<LanguageBreakdown> {
+  const totals = new Map<string, LanguageTotal>();
+  for (const year of years) {
+    const payload = (await requestGraphql(fetchImpl, token, commitLanguagesQuery, {
+      login: username,
+      ...yearVariables(year, now),
+    })) as ContributionLanguagePayload;
+    const user = requireUser(payload);
+    const repositories = user.contributionsCollection?.commitContributionsByRepository;
+    if (!Array.isArray(repositories)) throw new Error("GitHub GraphQL response missing commit languages");
+    for (const repository of repositories) {
+      const count = repository.contributions?.totalCount;
+      if (!isNonNegativeInteger(count)) continue;
+      const language = repository.repository?.primaryLanguage;
+      if (typeof language?.name !== "string") continue;
+      addLanguage(
+        totals,
+        language.name,
+        typeof language?.color === "string" ? language.color : null,
+        count,
+      );
+    }
+  }
+  return toLanguageBreakdown(totals);
+}
+
+export async function fetchGithubCommitLanguages(
+  username: string,
+  token: string,
+  now: Date = new Date(),
+  fetchImpl: typeof fetch = fetch,
+): Promise<LanguageBreakdown> {
+  const years = await fetchContributionYears(username, token, fetchImpl);
+  return fetchCommitLanguageYears(username, token, years, now, fetchImpl);
+}
+
+export async function fetchGithubProductiveTime(
+  username: string,
+  token: string,
+  now: Date = new Date(),
+  fetchImpl: typeof fetch = fetch,
+  utcOffsetHours = 9,
+): Promise<ProductiveTime> {
+  const counts = Array.from({ length: 24 }, (_, hour) => ({ hour, contributions: 0 }));
+  const userPayload = (await requestGraphql(fetchImpl, token, productiveTimeUserQuery, {
+    login: username,
+  })) as ProductiveTimeUserPayload;
+  const user = requireUser(userPayload);
+  if (typeof user.id !== "string" && typeof user.id !== "number") {
+    throw new Error("GitHub GraphQL response missing productive time user");
+  }
+
+  const since = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
+  const payload = (await requestGraphql(fetchImpl, token, productiveTimeQuery, {
+    login: username,
+    userId: String(user.id),
+    since,
+    until: now.toISOString(),
+  })) as ProductiveTimePayload;
+  const productiveUser = requireUser(payload);
+  const repositories = productiveUser.contributionsCollection?.commitContributionsByRepository;
+  if (!Array.isArray(repositories)) throw new Error("GitHub GraphQL response missing productive time");
+  const addCommits = (history: ProductiveCommitHistory | undefined): void => {
+    for (const node of history?.nodes ?? []) {
+      if (typeof node.committedDate !== "string") continue;
+      const committedAt = new Date(node.committedDate);
+      if (Number.isNaN(committedAt.getTime())) continue;
+      const hour = (committedAt.getUTCHours() + Math.trunc(utcOffsetHours) + 24) % 24;
+      const bucket = counts[hour];
+      if (bucket) bucket.contributions += 1;
+    }
+  };
+  for (const repository of repositories) {
+    const repositoryData = repository.repository;
+    const history = repositoryData?.defaultBranchRef?.target?.history;
+    addCommits(history);
+
+    let pageInfo = history?.pageInfo;
+    const seenCursors = new Set<string>();
+    while (pageInfo?.hasNextPage === true) {
+      const fullName = repositoryData?.nameWithOwner;
+      if (typeof fullName !== "string") {
+        throw new Error("GitHub GraphQL response missing productive time repository");
+      }
+      const separator = fullName.indexOf("/");
+      if (separator <= 0 || separator === fullName.length - 1) {
+        throw new Error("GitHub GraphQL response missing productive time repository name");
+      }
+      const cursor = pageInfo.endCursor;
+      if (typeof cursor !== "string" || !cursor || seenCursors.has(cursor)) {
+        throw new Error("GitHub GraphQL response missing productive time cursor");
+      }
+      seenCursors.add(cursor);
+      const pagePayload = (await requestGraphql(fetchImpl, token, productiveTimeRepositoryQuery, {
+        owner: fullName.slice(0, separator),
+        name: fullName.slice(separator + 1),
+        userId: String(user.id),
+        since,
+        until: now.toISOString(),
+        after: cursor,
+      })) as ProductiveTimeRepositoryPayload;
+      const pageHistory = pagePayload.data?.repository?.defaultBranchRef?.target?.history;
+      addCommits(pageHistory);
+      pageInfo = pageHistory?.pageInfo;
+    }
+  }
+  return {
+    total: counts.reduce((sum, bucket) => sum + bucket.contributions, 0),
+    hours: counts,
   };
 }
