@@ -105,6 +105,21 @@ test("Profile Detailsは日別データを月別集計して時系列に描く",
   assert.doesNotMatch(svg, />26\/02<\/text>/);
 });
 
+test("月別の貢献が全ゼロなら面の上下端を同じ55pxにして塗り面を作らない", () => {
+  const model = buildProfileDetailsCard({
+    ...getFixtureProfileDetails("zero"),
+    totalContributions: 0,
+    contributionDays: [
+      { date: "2026-01-01", contributionCount: 0 },
+      { date: "2026-02-01", contributionCount: 0 },
+    ],
+  }, new Date("2026-09-15T00:00:00Z"));
+  const svg = renderProfileDetailsSvg(model);
+  const area = svg.match(/class="contribution-area"[^>]*d="([^"]+)"/)?.[1];
+
+  assert.equal(area, "M0,55L380,55L380,55L0,55Z");
+});
+
 test("空とゼロのデータも有限の自己完結したSVGになる", () => {
   const svgs = [
     renderProfileDetailsSvg(buildProfileDetailsCard({...getFixtureProfileDetails("empty"), contributionDays: []})),

@@ -85,7 +85,7 @@ export function renderProfileDetailsSvg(model: ProfileDetailsCardModel): string 
   const x = (time: number) => span === 0 ? chartWidth / 2 : (time - firstTime) / span * chartWidth;
   const scale = chartScale(Math.max(0, ...months.map(month => month.count)), chartHeight, 8);
   const points = months.map(month => ({x: x(month.time), y: scale.y(month.count)}));
-  const path = areaPath(points, chartHeight);
+  const path = areaPath(points, scale.y(0));
   lines.push(`<g transform="translate(${chartOrigin.x},${chartOrigin.y + extraHeight})" color="${theme.chart}">`);
   if (path) lines.push(`<path class="contribution-area" transform="translate(-30,0)" stroke="${theme.chart}" fill="${theme.chart}" opacity="1" d="${path}" />`);
   lines.push(
