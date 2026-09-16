@@ -10,6 +10,16 @@ import type {
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
 const YEAR_BATCH_SIZE = 5;
 
+export async function validateGithubToken(token: string, fetchImpl: typeof fetch = fetch): Promise<void> {
+  if (!token.trim()) throw new Error("PROFILE_GITHUB_TOKEN is missing");
+  const payload = await requestGraphql(fetchImpl, token, "Viewer", "query Viewer { viewer { id } }", {}) as {
+    data?: { viewer?: { id?: unknown } | null };
+  };
+  if (typeof payload?.data?.viewer?.id !== "string" || !payload.data.viewer.id) {
+    throw new Error("GitHub GraphQL Viewer response missing viewer");
+  }
+}
+
 const profileStatsQuery = `
   query ProfileStats($login: String!, $after: String) {
     user(login: $login) {
@@ -104,6 +114,7 @@ const repositoryLanguagesQuery = `
           endCursor
         }
         nodes {
+          isPrivate
           primaryLanguage {
             name
             color
@@ -304,41 +315,81 @@ function isProfileUser(value: unknown): value is ProfileUser {
   );
 }
 
-function isGraphQLErrorPayload(value: unknown): boolean {
-  if (typeof value !== "object" || value === null) return false;
-  const errors = (value as Record<string, unknown>).errors;
-  return Array.isArray(errors) && errors.length > 0;
+type GraphqlOperation =
+  | "Viewer"
+  | "ProfileStats"
+  | "ContributionsByYear"
+  | "ProfileDetailsYears"
+  | "RepositoryLanguages"
+  | "ContributionYears"
+  | "CommitLanguagesByYear"
+  | "ProductiveTimeUser"
+  | "ProductiveTime"
+  | "ProductiveTimeRepository";
+
+// Allow only known classifications. Arbitrary type/code strings can contain
+// upstream data just like message text, so character filtering is insufficient.
+const SAFE_GRAPHQL_CODES = new Set([
+  "FORBIDDEN", "UNAUTHORIZED", "UNAUTHENTICATED", "NOT_FOUND", "RATE_LIMITED",
+  "BAD_USER_INPUT", "GRAPHQL_PARSE_FAILED", "GRAPHQL_VALIDATION_FAILED",
+  "INTERNAL", "INTERNAL_SERVER_ERROR", "SERVICE_UNAVAILABLE",
+  "MAX_NODE_LIMIT_EXCEEDED", "RESOURCE_LIMITS_EXCEEDED",
+]);
+
+function safeGraphqlCodes(errors: unknown[]): string[] {
+  const codes = new Set<string>();
+  for (const error of errors) {
+    if (typeof error !== "object" || error === null) continue;
+    const { type, extensions } = error as Record<string, unknown>;
+    const code = typeof extensions === "object" && extensions !== null
+      ? (extensions as Record<string, unknown>).code : undefined;
+    for (const value of [type, code]) {
+      if (typeof value === "string" && SAFE_GRAPHQL_CODES.has(value)) codes.add(value);
+    }
+  }
+  return [...codes].sort();
 }
 
 async function requestGraphql(
   fetchImpl: typeof fetch,
   token: string,
+  operation: GraphqlOperation,
   query: string,
   variables: Record<string, string | null>,
 ): Promise<unknown> {
-  const response = await fetchImpl(GITHUB_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  let response: Response;
+  try {
+    response = await fetchImpl(GITHUB_GRAPHQL_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+  } catch {
+    throw new Error(`GitHub API network request failed (operation ${operation})`);
+  }
 
   if (!response.ok) {
-    throw new Error(`GitHub API request failed with status ${response.status}`);
+    const classification = response.status === 401 ? "; authentication failed" : "";
+    throw new Error(`GitHub API request failed with status ${response.status} (operation ${operation}${classification})`);
   }
 
   let payload: unknown;
   try {
     payload = await response.json();
   } catch {
-    throw new Error("GitHub API returned invalid JSON");
+    throw new Error(`GitHub API returned invalid JSON (operation ${operation}; status ${response.status})`);
   }
 
-  if (isGraphQLErrorPayload(payload)) {
-    throw new Error("GitHub GraphQL request failed");
+  const errors = typeof payload === "object" && payload !== null
+    ? (payload as Record<string, unknown>).errors : undefined;
+  if (Array.isArray(errors) && errors.length > 0) {
+    const codes = safeGraphqlCodes(errors);
+    const classification = codes.length ? `; ${codes.join(", ")}` : "";
+    throw new Error(`GitHub GraphQL request failed (operation ${operation}; status ${response.status}${classification})`);
   }
 
   return payload;
@@ -362,6 +413,7 @@ async function fetchCommitContributionsForYear(
   const payload = (await requestGraphql(
     fetchImpl,
     token,
+    "ContributionsByYear",
     commitContributionsQuery,
     { login: username, ...yearVariables(year, now) },
   )) as CommitPayload;
@@ -413,7 +465,7 @@ export async function fetchGithubStats(
   let totalStars = 0;
 
   while (true) {
-    const payload = (await requestGraphql(fetchImpl, token, profileStatsQuery, {
+    const payload = (await requestGraphql(fetchImpl, token, "ProfileStats", profileStatsQuery, {
       login: username,
       after,
     })) as ProfilePayload;
@@ -585,7 +637,7 @@ async function fetchContributionYears(
   token: string,
   fetchImpl: typeof fetch,
 ): Promise<number[]> {
-  const payload = (await requestGraphql(fetchImpl, token, contributionYearsQuery, { login: username })) as {
+  const payload = (await requestGraphql(fetchImpl, token, "ContributionYears", contributionYearsQuery, { login: username })) as {
     data?: { user?: { contributionsCollection?: ContributionYears } | null };
   };
   const user = requireUser(payload);
@@ -602,7 +654,7 @@ export async function fetchGithubProfileDetails(
   now: Date = new Date(),
   fetchImpl: typeof fetch = fetch,
 ): Promise<ProfileDetails> {
-  const payload = (await requestGraphql(fetchImpl, token, profileDetailsYearsQuery, {
+  const payload = (await requestGraphql(fetchImpl, token, "ProfileDetailsYears", profileDetailsYearsQuery, {
     login: username,
   })) as ProfileDetailsPayload;
   const user = requireUser(payload);
@@ -666,7 +718,7 @@ export async function fetchGithubRepoLanguages(
   const seenCursors = new Set<string>();
 
   while (true) {
-    const payload = (await requestGraphql(fetchImpl, token, repositoryLanguagesQuery, {
+    const payload = (await requestGraphql(fetchImpl, token, "RepositoryLanguages", repositoryLanguagesQuery, {
       login: username,
       after,
     })) as RepositoryLanguagePayload;
@@ -704,7 +756,7 @@ async function fetchCommitLanguageYears(
 ): Promise<LanguageBreakdown> {
   const totals = new Map<string, LanguageTotal>();
   for (const year of years) {
-    const payload = (await requestGraphql(fetchImpl, token, commitLanguagesQuery, {
+    const payload = (await requestGraphql(fetchImpl, token, "CommitLanguagesByYear", commitLanguagesQuery, {
       login: username,
       ...yearVariables(year, now),
     })) as ContributionLanguagePayload;
@@ -746,7 +798,7 @@ export async function fetchGithubProductiveTime(
   utcOffsetHours = 9,
 ): Promise<ProductiveTime> {
   const counts = Array.from({ length: 24 }, (_, hour) => ({ hour, contributions: 0 }));
-  const userPayload = (await requestGraphql(fetchImpl, token, productiveTimeUserQuery, {
+  const userPayload = (await requestGraphql(fetchImpl, token, "ProductiveTimeUser", productiveTimeUserQuery, {
     login: username,
   })) as ProductiveTimeUserPayload;
   const user = requireUser(userPayload);
@@ -755,7 +807,7 @@ export async function fetchGithubProductiveTime(
   }
 
   const since = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
-  const payload = (await requestGraphql(fetchImpl, token, productiveTimeQuery, {
+  const payload = (await requestGraphql(fetchImpl, token, "ProductiveTime", productiveTimeQuery, {
     login: username,
     userId: String(user.id),
     since,
@@ -796,7 +848,7 @@ export async function fetchGithubProductiveTime(
         throw new Error("GitHub GraphQL response missing productive time cursor");
       }
       seenCursors.add(cursor);
-      const pagePayload = (await requestGraphql(fetchImpl, token, productiveTimeRepositoryQuery, {
+      const pagePayload = (await requestGraphql(fetchImpl, token, "ProductiveTimeRepository", productiveTimeRepositoryQuery, {
         owner: fullName.slice(0, separator),
         name: fullName.slice(separator + 1),
         userId: String(user.id),
