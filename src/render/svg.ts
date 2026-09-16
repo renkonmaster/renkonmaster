@@ -1,11 +1,14 @@
 import type { ProfileStatsCardModel } from "../cards/profile-stats.ts";
+import { BLUEBERRY_THEME } from "./theme.ts";
 
 const theme = {
-  background: "#242938",
-  title: "#82AAFF",
-  text: "#27E8A7",
-  icon: "#89DDFF",
-  border: "#000000",
+  // Keep the historic serialization casing so the committed Stats fixture is
+  // byte-for-byte stable while sharing the upstream palette.
+  background: BLUEBERRY_THEME.background.toUpperCase(),
+  title: BLUEBERRY_THEME.title.toUpperCase(),
+  text: BLUEBERRY_THEME.text.toUpperCase(),
+  icon: BLUEBERRY_THEME.icon.toUpperCase(),
+  border: BLUEBERRY_THEME.stroke,
 };
 
 const CARD_WIDTH = 340;

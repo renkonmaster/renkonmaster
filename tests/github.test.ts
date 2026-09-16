@@ -7,6 +7,7 @@ import {
   fetchGithubProfileDetails,
   fetchGithubRepoLanguages,
   fetchGithubStats,
+  validateGithubToken,
 } from "../src/data/github.ts";
 
 const successPayload = {
@@ -30,6 +31,53 @@ const commitPayloads = new Map([
   ["2026-01-01T00:00:00Z", 1000],
   ["2025-01-01T00:00:00Z", 284],
 ]);
+
+test("token preflightはsecret欠落をAPI呼び出し前に識別する", async () => {
+  await assert.rejects(validateGithubToken("", async () => {
+    assert.fail("must not request without a token");
+  }), /PROFILE_GITHUB_TOKEN is missing/);
+});
+
+test("token preflightは認証済みRESTの空scope headerでclassic PATを検証する", async () => {
+  await validateGithubToken("ghp_controlled-token", async (url, init) => {
+    assert.equal(String(url), "https://api.github.com/user");
+    assert.equal(init?.method, "GET");
+    assert.equal(new Headers(init?.headers).get("Authorization"), "Bearer ghp_controlled-token");
+    return new Response("sensitive response is never parsed", {
+      status: 200,
+      headers: { "X-OAuth-Scopes": "" },
+    });
+  });
+});
+
+for (const scenario of [
+  { name: "repo scope", token: "ghp_controlled-token", scopes: "repo, read:org", status: 200 },
+  { name: "public_repo scope", token: "ghp_controlled-token", scopes: "public_repo", status: 200 },
+  { name: "unsafe scope header", token: "ghp_controlled-token", scopes: "sensitive-repository", status: 200 },
+  { name: "missing scope header", token: "ghp_controlled-token", scopes: undefined, status: 200 },
+  { name: "fine-grained PAT", token: "github_pat_controlled-token", scopes: "", status: 200 },
+  { name: "app token", token: "ghs_controlled-token", scopes: "", status: 200 },
+  { name: "unverifiable token type", token: "controlled-token", scopes: "", status: 200 },
+  { name: "invalid authentication", token: "ghp_controlled-token", scopes: "", status: 401 },
+  { name: "REST unavailable", token: "ghp_controlled-token", scopes: "", status: 500 },
+  { name: "network failure", token: "ghp_controlled-token", scopes: "", status: 0 },
+]) {
+  test(`token preflight rejects ${scenario.name} with a fixed sanitized error`, async () => {
+    await assert.rejects(validateGithubToken(scenario.token, async () => {
+      if (!scenario.status) throw new Error("controlled-token sensitive-repository");
+      return new Response("controlled-token sensitive-repository", {
+        status: scenario.status,
+        headers: scenario.scopes === undefined ? {} : { "X-OAuth-Scopes": scenario.scopes },
+      });
+    }), (error: unknown) => {
+      assert(error instanceof Error);
+      assert.equal(error.message, "GitHub token preflight failed: authentication or public-only scope verification failed; use a classic PAT with no OAuth scopes");
+      assert.doesNotMatch(String(error.stack), /controlled-token|sensitive-repository/);
+      assert.equal(error.cause, undefined);
+      return true;
+    });
+  });
+}
 
 test("GitHub GraphQLの集計値をProfileStatsへ変換する", async () => {
   let requestUrl = "";
@@ -159,26 +207,91 @@ test("HTTPエラーは認証情報を含めずに失敗する", async () => {
     (error: unknown) => {
       assert(error instanceof Error);
       assert.match(error.message, /GitHub API request failed with status 500/);
+      assert.match(error.message, /ProfileStats/);
       assert.doesNotMatch(error.message, /unit-test-token/);
       return true;
     },
   );
 });
 
-test("GraphQLエラーはレスポンス本文を露出せずに失敗する", async () => {
+test("GraphQLエラーはoperationと安全な分類だけを含める", async () => {
   const fetchImpl: typeof fetch = async () =>
-    new Response(JSON.stringify({ errors: [{ message: "secret repository name" }] }), { status: 200 });
+    new Response(JSON.stringify({ errors: [
+      { type: "FORBIDDEN", extensions: { code: "UNAUTHENTICATED" }, message: "secret repository name unit-test-token" },
+      { type: "SECRET_REPOSITORY", extensions: { code: "UNIT_TEST_TOKEN" } },
+    ] }), { status: 200 });
 
   await assert.rejects(
     fetchGithubStats("renkonmaster", "unit-test-token", new Date("2026-08-19T00:00:00.000Z"), fetchImpl),
     (error: unknown) => {
       assert(error instanceof Error);
       assert.match(error.message, /GitHub GraphQL request failed/);
-      assert.doesNotMatch(error.message, /secret repository name/);
+      assert.match(error.message, /ProfileStats/);
+      assert.match(error.message, /status 200/);
+      assert.match(error.message, /FORBIDDEN/);
+      assert.match(error.message, /UNAUTHENTICATED/);
+      assert.doesNotMatch(error.message, /secret repository name|unit-test-token|SECRET_REPOSITORY|UNIT_TEST_TOKEN|renkonmaster/);
       return true;
     },
   );
 });
+
+test("無効なtokenはHTTP statusと認証失敗を安全に識別する", async () => {
+  await assert.rejects(
+    fetchGithubStats("private-variable", "unit-test-token", new Date(), async () =>
+      new Response("Bad credentials unit-test-token private-variable", { status: 401 })),
+    (error: unknown) => {
+      assert(error instanceof Error);
+      assert.match(error.message, /ProfileStats/);
+      assert.match(error.message, /status 401/);
+      assert.match(error.message, /authentication/i);
+      assert.doesNotMatch(String(error.stack), /unit-test-token|private-variable|Bad credentials/);
+      assert.equal(error.cause, undefined);
+      return true;
+    },
+  );
+});
+
+test("年別commit取得の失敗はProfileStatsではなくContributionsByYearを識別する", async () => {
+  const fetchImpl: typeof fetch = async (_input, init) => {
+    const { query } = JSON.parse(String(init?.body));
+    return new Response(JSON.stringify(query.includes("query ProfileStats")
+      ? successPayload
+      : { errors: [{ type: "RATE_LIMITED", message: "sensitive response" }] }), { status: 200 });
+  };
+  await assert.rejects(fetchGithubStats("renkonmaster", "unit-test-token", new Date(), fetchImpl),
+    (error: unknown) => {
+      assert(error instanceof Error);
+      assert.match(error.message, /ContributionsByYear/);
+      assert.match(error.message, /RATE_LIMITED/);
+      assert.doesNotMatch(error.message, /ProfileStats|sensitive response/);
+      return true;
+    });
+});
+
+for (const [operation, run] of [
+  ["ProfileDetailsYears", (fetchImpl: typeof fetch) => fetchGithubProfileDetails("sensitive-variable", "unit-test-token", new Date(), fetchImpl)],
+  ["RepositoryLanguages", (fetchImpl: typeof fetch) => fetchGithubRepoLanguages("sensitive-variable", "unit-test-token", fetchImpl)],
+  ["ContributionYears", (fetchImpl: typeof fetch) => fetchGithubCommitLanguages("sensitive-variable", "unit-test-token", new Date(), fetchImpl)],
+  ["ProductiveTimeUser", (fetchImpl: typeof fetch) => fetchGithubProductiveTime("sensitive-variable", "unit-test-token", new Date(), fetchImpl)],
+] as const) {
+  for (const failure of ["graphql", "network", "json"] as const) {
+    test(`${operation}の${failure}失敗はoperationを含めて本文・変数・tokenを伏せる`, async () => {
+      await assert.rejects(run(async () => {
+        if (failure === "network") throw new Error("sensitive-variable unit-test-token");
+        return new Response(failure === "json" ? "sensitive-variable unit-test-token" : JSON.stringify({
+          errors: [{ message: "sensitive-variable unit-test-token" }],
+        }), { status: 200 });
+      }), (error: unknown) => {
+        assert(error instanceof Error);
+        assert.match(error.message, new RegExp(operation));
+        assert.doesNotMatch(String(error.stack), /sensitive-variable|unit-test-token/);
+        assert.equal(error.cause, undefined);
+        return true;
+      });
+    });
+  }
+}
 
 test("対象ユーザーが存在しない場合は明示的に失敗する", async () => {
   const fetchImpl: typeof fetch = async () =>
@@ -238,6 +351,7 @@ test("GitHubプロフィール詳細をContributionカレンダーから集計�
 
   assert.match(requests[0]?.query ?? "", /contributionYears/);
   assert.match(requests[0]?.query ?? "", /repositories\(first: 1, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false\)/);
+  assert.doesNotMatch(requests[0]?.query ?? "", /\bemail\b/, "public-only token must not request the scope-gated email field");
   assert.deepEqual(details, {
     username: "renkonmaster",
     title: "Renkon",
@@ -297,6 +411,7 @@ test("GitHubリポジトリのprimary languageをページングして件数集�
     };
     assert.match(body.query, /primaryLanguage \{/);
     assert.match(body.query, /privacy: PUBLIC/);
+    assert.match(body.query, /nodes\s*\{\s*isPrivate\b/);
     assert.equal(body.variables.after, call === 0 ? null : "repo-cursor");
     return new Response(JSON.stringify(payloads[call++]), { status: 200 });
   };
