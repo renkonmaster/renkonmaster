@@ -93,7 +93,6 @@ const profileDetailsYearsQuery = `
       login
       name
       createdAt
-      email
       websiteUrl
       repositories(first: 1, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false) {
         totalCount
@@ -544,7 +543,6 @@ type ProfileDetailsPayload = {
       login?: unknown;
       name?: unknown;
       createdAt?: unknown;
-      email?: unknown;
       websiteUrl?: unknown;
       repositories?: { totalCount?: unknown };
       contributionsCollection?: ContributionYears & { contributionCalendar?: ContributionCalendar };
@@ -688,11 +686,9 @@ export async function fetchGithubProfileDetails(
 
   const contributionDays: ContributionDay[] = calendar.weeks.flatMap((week) => week.contributionDays);
   contributionDays.sort((left, right) => left.date.localeCompare(right.date));
-  const contact = typeof user.email === "string" && user.email
-    ? user.email
-    : typeof user.websiteUrl === "string" && user.websiteUrl
-      ? user.websiteUrl
-      : undefined;
+  const contact = typeof user.websiteUrl === "string" && user.websiteUrl
+    ? user.websiteUrl
+    : undefined;
 
   return {
     username: user.login,

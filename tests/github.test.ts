@@ -351,6 +351,7 @@ test("GitHubプロフィール詳細をContributionカレンダーから集計�
 
   assert.match(requests[0]?.query ?? "", /contributionYears/);
   assert.match(requests[0]?.query ?? "", /repositories\(first: 1, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false\)/);
+  assert.doesNotMatch(requests[0]?.query ?? "", /\bemail\b/, "public-only token must not request the scope-gated email field");
   assert.deepEqual(details, {
     username: "renkonmaster",
     title: "Renkon",
