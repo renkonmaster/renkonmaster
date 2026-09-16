@@ -3,16 +3,22 @@
   <rect x="1" y="1" width="338" height="198" rx="5" ry="5" fill="#242938" stroke="#000000" stroke-width="1" stroke-opacity="0" />
 <text x="30" y="40" fill="#82aaff" font-size="22">Top Languages by Repo</text>
 <g transform="translate(40,40)">
-<rect y="18" width="14" height="14" fill="#3178c6" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="30" fill="#27e8a7" font-size="14">TypeScript</text>
-<rect y="43.2" width="14" height="14" fill="#00ADD8" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="55.2" fill="#27e8a7" font-size="14">Go</text>
-<rect y="68.4" width="14" height="14" fill="#89e051" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="80.4" fill="#27e8a7" font-size="14">Shell</text>
+<rect y="18" width="14" height="14" fill="#00ADD8" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="30" fill="#27e8a7" font-size="14">Go</text>
+<rect y="43.2" width="14" height="14" fill="#41b883" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="55.2" fill="#27e8a7" font-size="14">Vue</text>
+<rect y="68.4" width="14" height="14" fill="#555555" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="80.4" fill="#27e8a7" font-size="14">C</text>
+<rect y="93.6" width="14" height="14" fill="#3572A5" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="105.6" fill="#27e8a7" font-size="14">Python</text>
+<rect y="118.8" width="14" height="14" fill="#3178c6" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">TypeScript</text>
 </g>
 <g transform="translate(230,120)">
-<g class="arc"><path d="M0,-60A60,60,0,1,1,-22.961,55.433L-13.394,32.336A35,35,0,1,0,0,-35Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-22.961,55.433A60,60,0,0,1,-49.888,-33.334L-29.101,-19.445A35,35,0,0,0,-13.394,32.336Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-49.888,-33.334A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-29.101,-19.445Z" fill="#89e051" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M0,-60A60,60,0,0,1,57.063,18.541L33.287,10.816A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M57.063,18.541A60,60,0,0,1,0,60L0,35A35,35,0,0,0,33.287,10.816Z" fill="#41b883" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M0,60A60,60,0,0,1,-57.063,18.541L-33.287,10.816A35,35,0,0,0,0,35Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-57.063,18.541A60,60,0,0,1,-35.267,-48.541L-20.572,-28.316A35,35,0,0,0,-33.287,10.816Z" fill="#3572A5" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-35.267,-48.541A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-20.572,-28.316Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
 </g>
 </svg>

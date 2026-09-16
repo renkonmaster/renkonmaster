@@ -3,13 +3,22 @@
   <rect x="1" y="1" width="338" height="198" rx="5" ry="5" fill="#242938" stroke="#000000" stroke-width="1" stroke-opacity="0" />
 <text x="30" y="40" fill="#82aaff" font-size="22">Top Languages by Commit</text>
 <g transform="translate(40,40)">
-<rect y="18" width="14" height="14" fill="#3178c6" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="30" fill="#27e8a7" font-size="14">TypeScript</text>
-<rect y="43.2" width="14" height="14" fill="#00ADD8" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="55.2" fill="#27e8a7" font-size="14">Go</text>
+<rect y="18" width="14" height="14" fill="#00ADD8" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="30" fill="#27e8a7" font-size="14">Go</text>
+<rect y="43.2" width="14" height="14" fill="#3178c6" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="55.2" fill="#27e8a7" font-size="14">TypeScript</text>
+<rect y="68.4" width="14" height="14" fill="#555555" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="80.4" fill="#27e8a7" font-size="14">C</text>
+<rect y="93.6" width="14" height="14" fill="#663399" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="105.6" fill="#27e8a7" font-size="14">CSS</text>
+<rect y="118.8" width="14" height="14" fill="#89e051" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">Shell</text>
 </g>
 <g transform="translate(230,120)">
-<g class="arc"><path d="M0,-60A60,60,0,1,1,-40.675,44.109L-23.727,25.73A35,35,0,1,0,0,-35Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-40.675,44.109A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-23.727,25.73Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M0,-60A60,60,0,0,1,42.967,41.879L25.064,24.43A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M42.967,41.879A60,60,0,0,1,-37.09,47.163L-21.636,27.512A35,35,0,0,0,25.064,24.43Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-37.09,47.163A60,60,0,0,1,-51.29,-31.134L-29.919,-18.162A35,35,0,0,0,-21.636,27.512Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-51.29,-31.134A60,60,0,0,1,-20.659,-56.331L-12.051,-32.86A35,35,0,0,0,-29.919,-18.162Z" fill="#663399" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-20.659,-56.331A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-12.051,-32.86Z" fill="#89e051" stroke="#242938" stroke-width="2" /></g>
 </g>
 </svg>
