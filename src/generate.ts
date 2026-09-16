@@ -24,11 +24,9 @@ import {
   fetchGithubStats,
 } from "./data/github.ts";
 import { renderProfileStatsSvg } from "./render/svg.ts";
-import {
-  renderLanguageSvg,
-  renderProductiveTimeSvg,
-  renderProfileDetailsSvg,
-} from "./render/additional.ts";
+import { renderLanguageSvg } from "./render/language.ts";
+import { renderProductiveTimeSvg } from "./render/productive-time.ts";
+import { renderProfileDetailsSvg } from "./render/profile-details.ts";
 import type {
   GeneratorConfig,
   LanguageBreakdown,

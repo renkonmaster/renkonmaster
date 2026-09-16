@@ -5,6 +5,10 @@ import { test } from "node:test";
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
 import { getFixtureStats } from "../src/data/fixture.ts";
 import { renderProfileStatsSvg } from "../src/render/svg.ts";
+import { buildProfileDetailsCard } from "../src/cards/additional.ts";
+import { getFixtureProfileDetails } from "../src/data/fixture.ts";
+import { renderProfileDetailsSvg } from "../src/render/profile-details.ts";
+import { renderProductiveTimeSvg } from "../src/render/productive-time.ts";
 import {
   BLUEBERRY_THEME,
   CARD_FONT,
@@ -136,4 +140,20 @@ test("Stats rendererはfixture SVGをbyte-for-byte維持する", () => {
   const actual = renderProfileStatsSvg(buildProfileStatsCard(getFixtureStats("renkonmaster")));
 
   assert.equal(actual, expected);
+});
+
+test("詳細の省略数値は上流の小文字kと2桁のゼロ埋めを保つ", () => {
+  const model = buildProfileDetailsCard({
+    ...getFixtureProfileDetails("numbers"), totalContributions: 1200, publicRepositories: 1000000000,
+  }, new Date("2026-09-15T00:00:00Z"));
+  const svg = renderProfileDetailsSvg(model);
+  assert.match(svg, />1\.20k Contributions on GitHub<\/text>/);
+  assert.match(svg, />1\.00G Public Repos<\/text>/);
+});
+
+test("少ないコミットの小数軸は上流の目盛り精度でゼロも表示する", () => {
+  const svg = renderProductiveTimeSvg({total: 1, hours: [{hour: 0, contributions: 1}]});
+  assert.match(svg, />0\.0<\/text>/);
+  assert.match(svg, />0\.2<\/text>/);
+  assert.match(svg, />1\.0<\/text>/);
 });
