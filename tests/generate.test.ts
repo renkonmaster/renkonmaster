@@ -4,14 +4,24 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-import { generateCards, writeGeneratedCard, writeGeneratedCards } from "../src/generate.ts";
-import {
-  getFixtureCommitLanguages,
-  getFixtureProductiveTime,
-  getFixtureProfileDetails,
-  getFixtureRepoLanguages,
-  getFixtureStats,
-} from "../src/data/fixture.ts";
+import { generateCards, writeGeneratedCard } from "../src/generate.ts";
+
+const cardContracts = [
+  { filename: "profile-stats.svg", width: 340, title: "Stats" },
+  { filename: "profile-details.svg", width: 700, title: "@renkonmaster" },
+  { filename: "most-commit-language.svg", width: 340, title: "Top Languages by Commit" },
+  { filename: "repos-per-language.svg", width: 340, title: "Top Languages by Repo" },
+  { filename: "productive-time.svg", width: 340, title: "Commits (UTC +9.00)" },
+] as const;
+
+function assertCardContract(svg: string, { width, title }: typeof cardContracts[number]): void {
+  assert.match(svg, new RegExp(`^<svg\\b[^>]*width="${width}"[^>]*height="200"[^>]*viewBox="0 0 ${width} 200"[^>]*>`));
+  assert(svg.includes(`>${title}</text>`), `missing card title: ${title}`);
+  assert.match(svg, /<\/svg>\s*$/);
+  assert.doesNotMatch(svg, /\b(?:NaN|Infinity)\b/);
+  // Plain URL text and the SVG namespace are fine; fetched resources are not.
+  assert.doesNotMatch(svg, /<(?:image|script|foreignObject)\b|\b(?:href|src)\s*=|@import|url\(\s*["']?(?!#)[^\s"')]/i);
+}
 
 for (const scenario of [
   { name: "broader scope", token: "ghp_controlled-token", scopes: "repo" },
@@ -103,37 +113,31 @@ test("writeGeneratedCardはfixtureのSVGを指定ディレクトリへ書き込�
   }
 });
 
-test("writeGeneratedCardsは5種類のfixture SVGを同じ出力先へ書き込む", async () => {
+test("generateCards writes exactly five self-contained fixture cards at upstream dimensions", async () => {
   const outputDir = await mkdtemp(join(tmpdir(), "profile-cards-test-"));
 
   try {
-    const paths = await writeGeneratedCards(
+    const paths = await generateCards(
       {
         dataSource: "fixture",
         username: "renkonmaster",
         token: undefined,
         outputDir,
       },
-      {
-        stats: getFixtureStats("renkonmaster"),
-        profileDetails: getFixtureProfileDetails("renkonmaster"),
-        repoLanguages: getFixtureRepoLanguages("renkonmaster"),
-        commitLanguages: getFixtureCommitLanguages("renkonmaster"),
-        productiveTime: getFixtureProductiveTime("renkonmaster"),
-      },
     );
 
-    assert.deepEqual(paths.map((path) => path.split("/").pop()), [
-      "profile-stats.svg",
-      "profile-details.svg",
-      "most-commit-language.svg",
-      "repos-per-language.svg",
-      "productive-time.svg",
-    ]);
-    for (const path of paths) {
-      assert.match(await readFile(path, "utf8"), /^<svg/);
+    assert.deepEqual(paths, cardContracts.map(({ filename }) => join(outputDir, filename)));
+    assert.deepEqual((await readdir(outputDir)).sort(), cardContracts.map(({ filename }) => filename).sort());
+    for (const contract of cardContracts) {
+      assertCardContract(await readFile(join(outputDir, contract.filename), "utf8"), contract);
     }
   } finally {
     await rm(outputDir, { recursive: true, force: true });
   }
 });
+
+for (const contract of cardContracts) {
+  test(`committed ${contract.filename} preserves the generated card contract`, async () => {
+    assertCardContract(await readFile(new URL(`../generated/${contract.filename}`, import.meta.url), "utf8"), contract);
+  });
+}

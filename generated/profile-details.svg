@@ -1,12 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="220" viewBox="0 0 600 220">
-  <rect x="1" y="1" width="598" height="218" rx="5" fill="#242938" />
-  <text x="25" y="35" fill="#82AAFF" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="20" font-weight="700">@renkonmaster</text>
-  <text x="25" y="58" fill="#D9E0EE" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="12">renkonmaster</text>
-  <text x="25" y="92" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">14 Contributions on GitHub</text>
-  <text x="25" y="117" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">32 Public Repos</text>
-  <text x="25" y="142" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">Joined GitHub 2016-02-27T00:00:00.000Z</text>
-  <text x="25" y="167" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="13">https://github.com/renkonmaster</text>
-  <rect x="315" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,0.5714285714285714)"><title>2026-08-17: 3</title></rect>
-  <rect x="326" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,1)"><title>2026-08-18: 7</title></rect>
-  <rect x="337" y="75" width="9" height="9" rx="2" fill="rgba(39,232,167,0.6785714285714286)"><title>2026-08-19: 4</title></rect>
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="200" viewBox="0 0 700 200">
+  <style>* { font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; }</style>
+  <rect x="1" y="1" width="698" height="198" rx="5" ry="5" fill="#242938" stroke="#000000" stroke-width="1" stroke-opacity="0" />
+<text x="30" y="40" fill="#82aaff" font-size="22">@renkonmaster</text>
+<g transform="translate(30,70)">
+<g transform="translate(0,0)" fill="#89ddff"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" /></g>
+<text x="21" y="14" fill="#27e8a7" font-size="14">14 Contributions on GitHub</text>
+<g transform="translate(0,28)" fill="#89ddff"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z" /></g>
+<text x="21" y="42" fill="#27e8a7" font-size="14">32 Public Repos</text>
+<g transform="translate(0,56)" fill="#89ddff"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 00.471.696l2.5 1a.75.75 0 00.557-1.392L8.5 7.742V4.75z" /></g>
+<text x="21" y="70" fill="#27e8a7" font-size="14">Joined GitHub 10 years ago</text>
+<g transform="translate(0,84)" fill="#89ddff"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z" /></g>
+<text x="21" y="98" fill="#27e8a7" font-size="14">https://github.com/renkonmaster</text>
+</g>
+<g transform="translate(295,50)" color="#82aaff">
+<path class="contribution-area" transform="translate(-30,0)" stroke="#82aaff" fill="#82aaff" opacity="1" d="M190,0L190,110Z" />
+<g transform="translate(-30,110)" color="#27e8a7" fill="none" font-size="10" text-anchor="middle">
+<path class="domain" stroke="currentColor" d="M0.5,6V0.5H380.5V6" />
+<g class="tick" transform="translate(190.5,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/08</text></g>
+</g>
+<g transform="translate(350,0)" color="#27e8a7" fill="none" font-size="10" text-anchor="start">
+<path class="domain" stroke="currentColor" d="M6,110.5H0.5V0.5H6" />
+<g class="tick" transform="translate(0,110.5)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">0</text></g>
+<g class="tick" transform="translate(0,94.786)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">2</text></g>
+<g class="tick" transform="translate(0,79.071)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">4</text></g>
+<g class="tick" transform="translate(0,63.357)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">6</text></g>
+<g class="tick" transform="translate(0,47.643)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">8</text></g>
+<g class="tick" transform="translate(0,31.929)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">10</text></g>
+<g class="tick" transform="translate(0,16.214)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">12</text></g>
+<g class="tick" transform="translate(0,0.5)"><line stroke="currentColor" x2="6" /><text fill="currentColor" x="9" dy="0.32em">14</text></g>
+</g>
+<text x="230" y="-15" fill="#27e8a7" font-size="10">contributions in the last year</text>
+</g>
 </svg>
