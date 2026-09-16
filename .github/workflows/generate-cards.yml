@@ -30,28 +30,12 @@ jobs:
       - name: Type-check generator
         run: npm run typecheck
 
-      - name: Validate public GitHub token
-        env:
-          GITHUB_TOKEN: ${{ secrets.PROFILE_GITHUB_TOKEN }}
-        run: |
-          node --import tsx --input-type=module <<'NODE'
-          import { validateGithubToken } from './src/data/github.ts';
-          try {
-            await validateGithubToken(process.env.GITHUB_TOKEN ?? '');
-            console.log('GitHub Viewer authentication succeeded.');
-          } catch (error) {
-            console.error(error.message);
-            process.exitCode = 1;
-          }
-          NODE
-
-      - name: Generate GitHub profile cards
+      - name: Validate public token and generate GitHub profile cards
         env:
           DATA_SOURCE: github
           GITHUB_USERNAME: renkonmaster
-          # GraphQL user/contribution queries require a user token. Keep this
-          # token public-only; the queries explicitly select public
-          # repositories and skip private repositories in contribution data.
+          # The generator verifies a classic PAT with no OAuth scopes through
+          # authenticated REST headers before starting any GraphQL aggregation.
           GITHUB_TOKEN: ${{ secrets.PROFILE_GITHUB_TOKEN }}
         run: npm run generate
 

@@ -12,11 +12,26 @@ const YEAR_BATCH_SIZE = 5;
 
 export async function validateGithubToken(token: string, fetchImpl: typeof fetch = fetch): Promise<void> {
   if (!token.trim()) throw new Error("PROFILE_GITHUB_TOKEN is missing");
-  const payload = await requestGraphql(fetchImpl, token, "Viewer", "query Viewer { viewer { id } }", {}) as {
-    data?: { viewer?: { id?: unknown } | null };
-  };
-  if (typeof payload?.data?.viewer?.id !== "string" || !payload.data.viewer.id) {
-    throw new Error("GitHub GraphQL Viewer response missing viewer");
+  const failure = "GitHub token preflight failed: authentication or public-only scope verification failed; use a classic PAT with no OAuth scopes";
+  // Fine-grained and app tokens do not offer verifiable OAuth scope semantics.
+  if (!token.startsWith("ghp_")) throw new Error(failure);
+  try {
+    const response = await fetchImpl("https://api.github.com/user", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      redirect: "error",
+    });
+    // An absent header is unverifiable, not equivalent to an empty scope list.
+    // No response body or header value may appear in diagnostics.
+    if (response.status !== 200 || response.headers.get("X-OAuth-Scopes") !== "") {
+      throw new Error(failure);
+    }
+  } catch {
+    throw new Error(failure);
   }
 }
 
@@ -316,7 +331,6 @@ function isProfileUser(value: unknown): value is ProfileUser {
 }
 
 type GraphqlOperation =
-  | "Viewer"
   | "ProfileStats"
   | "ContributionsByYear"
   | "ProfileDetailsYears"

@@ -38,30 +38,46 @@ test("token preflightはsecret欠落をAPI呼び出し前に識別する", async
   }), /PROFILE_GITHUB_TOKEN is missing/);
 });
 
-test("token preflightは最小viewer queryで認証を検証する", async () => {
-  await validateGithubToken("unit-test-token", async (_url, init) => {
-    const body = JSON.parse(String(init?.body));
-    assert.match(body.query, /query Viewer\s*\{\s*viewer\s*\{\s*id\s*\}\s*\}/);
-    assert.deepEqual(body.variables, {});
-    return new Response(JSON.stringify({ data: { viewer: { id: "user-id" } } }));
+test("token preflightは認証済みRESTの空scope headerでclassic PATを検証する", async () => {
+  await validateGithubToken("ghp_controlled-token", async (url, init) => {
+    assert.equal(String(url), "https://api.github.com/user");
+    assert.equal(init?.method, "GET");
+    assert.equal(new Headers(init?.headers).get("Authorization"), "Bearer ghp_controlled-token");
+    return new Response("sensitive response is never parsed", {
+      status: 200,
+      headers: { "X-OAuth-Scopes": "" },
+    });
   });
 });
 
-test("token preflightの無効な認証は安全なViewerエラーで失敗する", async () => {
-  await assert.rejects(validateGithubToken("unit-test-token", async () =>
-    new Response("unit-test-token", { status: 401 })), (error: unknown) => {
+for (const scenario of [
+  { name: "repo scope", token: "ghp_controlled-token", scopes: "repo, read:org", status: 200 },
+  { name: "public_repo scope", token: "ghp_controlled-token", scopes: "public_repo", status: 200 },
+  { name: "unsafe scope header", token: "ghp_controlled-token", scopes: "sensitive-repository", status: 200 },
+  { name: "missing scope header", token: "ghp_controlled-token", scopes: undefined, status: 200 },
+  { name: "fine-grained PAT", token: "github_pat_controlled-token", scopes: "", status: 200 },
+  { name: "app token", token: "ghs_controlled-token", scopes: "", status: 200 },
+  { name: "unverifiable token type", token: "controlled-token", scopes: "", status: 200 },
+  { name: "invalid authentication", token: "ghp_controlled-token", scopes: "", status: 401 },
+  { name: "REST unavailable", token: "ghp_controlled-token", scopes: "", status: 500 },
+  { name: "network failure", token: "ghp_controlled-token", scopes: "", status: 0 },
+]) {
+  test(`token preflight rejects ${scenario.name} with a fixed sanitized error`, async () => {
+    await assert.rejects(validateGithubToken(scenario.token, async () => {
+      if (!scenario.status) throw new Error("controlled-token sensitive-repository");
+      return new Response("controlled-token sensitive-repository", {
+        status: scenario.status,
+        headers: scenario.scopes === undefined ? {} : { "X-OAuth-Scopes": scenario.scopes },
+      });
+    }), (error: unknown) => {
       assert(error instanceof Error);
-      assert.match(error.message, /Viewer/);
-      assert.match(error.message, /authentication/i);
-      assert.doesNotMatch(String(error.stack), /unit-test-token/);
+      assert.equal(error.message, "GitHub token preflight failed: authentication or public-only scope verification failed; use a classic PAT with no OAuth scopes");
+      assert.doesNotMatch(String(error.stack), /controlled-token|sensitive-repository/);
+      assert.equal(error.cause, undefined);
       return true;
     });
-});
-
-test("token preflightはviewerのないレスポンスを成功にしない", async () => {
-  await assert.rejects(validateGithubToken("unit-test-token", async () =>
-    new Response(JSON.stringify({ data: { viewer: null } }))), /Viewer.*missing viewer/);
-});
+  });
+}
 
 test("GitHub GraphQLの集計値をProfileStatsへ変換する", async () => {
   let requestUrl = "";

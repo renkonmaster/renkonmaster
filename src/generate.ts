@@ -22,6 +22,7 @@ import {
   fetchGithubProfileDetails,
   fetchGithubRepoLanguages,
   fetchGithubStats,
+  validateGithubToken,
 } from "./data/github.ts";
 import { renderProfileStatsSvg } from "./render/svg.ts";
 import { renderLanguageSvg } from "./render/language.ts";
@@ -86,6 +87,7 @@ export async function generateCards(config: GeneratorConfig): Promise<string[]> 
     if (!config.token) {
       throw new Error("GITHUB_TOKEN is required for GitHub data generation");
     }
+    await validateGithubToken(config.token);
     const [stats, profileDetails, repoLanguages, commitLanguages, productiveTime] = await Promise.all([
       fetchGithubStats(config.username, config.token),
       fetchGithubProfileDetails(config.username, config.token),
