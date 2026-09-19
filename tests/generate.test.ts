@@ -20,6 +20,8 @@ function assertCardContract(svg: string, { width, title }: CardContract): void {
   assert.match(svg, new RegExp(`^<svg\\b[^>]*width="${width}"[^>]*height="200"[^>]*viewBox="0 0 ${width} 200"[^>]*>`));
   if (title !== undefined) {
     assert(svg.includes(`>${title}</text>`), `missing card title: ${title}`);
+  } else {
+    assert.match(svg, /<text x="30" y="40"[^>]*>[^<]+<\/text>/, "missing non-empty profile title");
   }
   assert.match(svg, /<\/svg>\s*$/);
   assert.doesNotMatch(svg, /\b(?:NaN|Infinity)\b/);
