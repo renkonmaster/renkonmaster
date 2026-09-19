@@ -6,10 +6,10 @@
   <text x="160" y="74" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">0</text>
   <g transform="translate(30,85)" fill="#89DDFF"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Zm0 1.5a5 5 0 1 1 0 10A5 5 0 0 1 8 3Zm-.75 1.5h1.5v3.19l2.28 1.316-.75 1.299L7.25 8.56V4.5Z" /></g>
   <text x="51" y="99" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">Total Commits:</text>
-  <text x="160" y="99" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">517</text>
+  <text x="160" y="99" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">531</text>
   <g transform="translate(30,110)" fill="#89DDFF"><path d="M3.25 1.5h3v1.5h-3v3h-1.5V3a1.5 1.5 0 0 1 1.5-1.5Zm9.5 0h-3v1.5h3v3h1.5V3a1.5 1.5 0 0 0-1.5-1.5Zm-9.5 13h3V13h-3v-3h-1.5v3a1.5 1.5 0 0 0 1.5 1.5Zm9.5 0h-3V13h3v-3h1.5v3a1.5 1.5 0 0 1-1.5 1.5Z" /></g>
   <text x="51" y="124" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">Total PRs:</text>
-  <text x="160" y="124" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">93</text>
+  <text x="160" y="124" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">96</text>
   <g transform="translate(30,135)" fill="#89DDFF"><path d="M8 1.25a6.75 6.75 0 1 0 0 13.5A6.75 6.75 0 0 0 8 1.25Zm0 1.5a5.25 5.25 0 1 1 0 10.5A5.25 5.25 0 0 1 8 2.75ZM7.25 5h1.5v3h3v1.5h-4.5V5Z" /></g>
   <text x="51" y="149" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">Total Issues:</text>
   <text x="160" y="149" fill="#27E8A7" font-family="Segoe UI, Ubuntu, Helvetica Neue, sans-serif" font-size="14">11</text>
