@@ -11,14 +11,14 @@
 <text x="16.8" y="80.4" fill="#27e8a7" font-size="14">C</text>
 <rect y="93.6" width="14" height="14" fill="#663399" stroke="#242938" stroke-width="1" />
 <text x="16.8" y="105.6" fill="#27e8a7" font-size="14">CSS</text>
-<rect y="118.8" width="14" height="14" fill="#89e051" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">Shell</text>
+<rect y="118.8" width="14" height="14" fill="#e34c26" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">HTML</text>
 </g>
 <g transform="translate(230,120)">
-<g class="arc"><path d="M0,-60A60,60,0,0,1,42.967,41.879L25.064,24.43A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M42.967,41.879A60,60,0,0,1,-37.09,47.163L-21.636,27.512A35,35,0,0,0,25.064,24.43Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-37.09,47.163A60,60,0,0,1,-51.29,-31.134L-29.919,-18.162A35,35,0,0,0,-21.636,27.512Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-51.29,-31.134A60,60,0,0,1,-20.659,-56.331L-12.051,-32.86A35,35,0,0,0,-29.919,-18.162Z" fill="#663399" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-20.659,-56.331A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-12.051,-32.86Z" fill="#89e051" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M0,-60A60,60,0,0,1,47.281,36.94L27.58,21.548A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M47.281,36.94A60,60,0,0,1,-41.68,43.16L-24.313,25.177A35,35,0,0,0,27.58,21.548Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-41.68,43.16A60,60,0,0,1,-50.206,-32.854L-29.287,-19.165A35,35,0,0,0,-24.313,25.177Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-50.206,-32.854A60,60,0,0,1,-20.521,-56.382L-11.971,-32.889A35,35,0,0,0,-29.287,-19.165Z" fill="#663399" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-20.521,-56.382A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-11.971,-32.889Z" fill="#e34c26" stroke="#242938" stroke-width="2" /></g>
 </g>
 </svg>
