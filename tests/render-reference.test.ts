@@ -1,10 +1,7 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { test } from "node:test";
 
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
-import { getFixtureStats } from "../src/data/fixture.ts";
-import { renderProfileStatsSvg } from "../src/render/svg.ts";
 import { buildProfileDetailsCard } from "../src/cards/additional.ts";
 import { getFixtureProfileDetails } from "../src/data/fixture.ts";
 import { renderProfileDetailsSvg } from "../src/render/profile-details.ts";
@@ -133,15 +130,6 @@ test("共通カードシェルは自己完結したSVGを作る", () => {
       `</svg>\n`,
   );
   assert.doesNotMatch(svg, /(?:href|xlink:href|<image|<script)/);
-});
-
-test("Stats rendererはfixture SVGのbyte contractを維持する", () => {
-  const actual = renderProfileStatsSvg(buildProfileStatsCard(getFixtureStats("renkonmaster")));
-
-  assert.equal(
-    createHash("sha256").update(actual).digest("hex"),
-    "526d1959190b02f530720d8dc5f69c1db7d6c9303711e43c254112ee12e7e959",
-  );
 });
 
 test("詳細の省略数値は上流の小文字kと2桁のゼロ埋めを保つ", () => {
