@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { test } from "node:test";
 
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
@@ -135,11 +135,13 @@ test("共通カードシェルは自己完結したSVGを作る", () => {
   assert.doesNotMatch(svg, /(?:href|xlink:href|<image|<script)/);
 });
 
-test("Stats rendererはfixture SVGをbyte-for-byte維持する", () => {
-  const expected = readFileSync(new URL("../generated/profile-stats.svg", import.meta.url), "utf8");
+test("Stats rendererはfixture SVGのbyte contractを維持する", () => {
   const actual = renderProfileStatsSvg(buildProfileStatsCard(getFixtureStats("renkonmaster")));
 
-  assert.equal(actual, expected);
+  assert.equal(
+    createHash("sha256").update(actual).digest("hex"),
+    "526d1959190b02f530720d8dc5f69c1db7d6c9303711e43c254112ee12e7e959",
+  );
 });
 
 test("詳細の省略数値は上流の小文字kと2桁のゼロ埋めを保つ", () => {
