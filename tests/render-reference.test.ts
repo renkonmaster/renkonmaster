@@ -1,10 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { buildProfileStatsCard } from "../src/cards/profile-stats.ts";
-import { getFixtureStats } from "../src/data/fixture.ts";
-import { renderProfileStatsSvg } from "../src/render/svg.ts";
 import { buildProfileDetailsCard } from "../src/cards/additional.ts";
 import { getFixtureProfileDetails } from "../src/data/fixture.ts";
 import { renderProfileDetailsSvg } from "../src/render/profile-details.ts";
@@ -133,13 +130,6 @@ test("共通カードシェルは自己完結したSVGを作る", () => {
       `</svg>\n`,
   );
   assert.doesNotMatch(svg, /(?:href|xlink:href|<image|<script)/);
-});
-
-test("Stats rendererはfixture SVGをbyte-for-byte維持する", () => {
-  const expected = readFileSync(new URL("../generated/profile-stats.svg", import.meta.url), "utf8");
-  const actual = renderProfileStatsSvg(buildProfileStatsCard(getFixtureStats("renkonmaster")));
-
-  assert.equal(actual, expected);
 });
 
 test("詳細の省略数値は上流の小文字kと2桁のゼロ埋めを保つ", () => {

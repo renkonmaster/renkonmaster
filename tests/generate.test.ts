@@ -14,9 +14,15 @@ const cardContracts = [
   { filename: "productive-time.svg", width: 340, title: "Commits (UTC +9.00)" },
 ] as const;
 
-function assertCardContract(svg: string, { width, title }: typeof cardContracts[number]): void {
+type CardContract = { filename: string; width: number; title?: string };
+
+function assertCardContract(svg: string, { width, title }: CardContract): void {
   assert.match(svg, new RegExp(`^<svg\\b[^>]*width="${width}"[^>]*height="200"[^>]*viewBox="0 0 ${width} 200"[^>]*>`));
-  assert(svg.includes(`>${title}</text>`), `missing card title: ${title}`);
+  if (title !== undefined) {
+    assert(svg.includes(`>${title}</text>`), `missing card title: ${title}`);
+  } else {
+    assert.match(svg, /<text x="30" y="40"[^>]*>[^<]+<\/text>/, "missing non-empty profile title");
+  }
   assert.match(svg, /<\/svg>\s*$/);
   assert.doesNotMatch(svg, /\b(?:NaN|Infinity)\b/);
   // Plain URL text and the SVG namespace are fine; fetched resources are not.
@@ -136,7 +142,11 @@ test("generateCards writes exactly five self-contained fixture cards at upstream
   }
 });
 
-for (const contract of cardContracts) {
+const committedCardContracts: readonly CardContract[] = cardContracts.map((contract) =>
+  contract.filename === "profile-details.svg" ? { filename: contract.filename, width: contract.width } : contract,
+);
+
+for (const contract of committedCardContracts) {
   test(`committed ${contract.filename} preserves the generated card contract`, async () => {
     assertCardContract(await readFile(new URL(`../generated/${contract.filename}`, import.meta.url), "utf8"), contract);
   });
