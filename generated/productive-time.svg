@@ -19,7 +19,7 @@
 <g class="tick" transform="translate(0,25.5)"><line stroke="currentColor" x2="-6" /><text fill="currentColor" x="-9" dy="0.32em">30</text></g>
 <g class="tick" transform="translate(0,0.5)"><line stroke="currentColor" x2="-6" /><text fill="currentColor" x="-9" dy="0.32em">40</text></g>
 </g>
-<rect class="bar" data-hour="0" fill="#82aaff" x="1.162" y="37.5" width="10.456" height="62.5" />
+<rect class="bar" data-hour="0" fill="#82aaff" x="1.162" y="35" width="10.456" height="65" />
 <rect class="bar" data-hour="1" fill="#82aaff" x="12.78" y="80" width="10.456" height="20" />
 <rect class="bar" data-hour="2" fill="#82aaff" x="24.398" y="100" width="10.456" height="0" />
 <rect class="bar" data-hour="3" fill="#82aaff" x="36.017" y="87.5" width="10.456" height="12.5" />
@@ -40,9 +40,9 @@
 <rect class="bar" data-hour="18" fill="#82aaff" x="210.29" y="5" width="10.456" height="95" />
 <rect class="bar" data-hour="19" fill="#82aaff" x="221.909" y="42.5" width="10.456" height="57.5" />
 <rect class="bar" data-hour="20" fill="#82aaff" x="233.527" y="52.5" width="10.456" height="47.5" />
-<rect class="bar" data-hour="21" fill="#82aaff" x="245.145" y="32.5" width="10.456" height="67.5" />
-<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="17.5" width="10.456" height="82.5" />
-<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="5" width="10.456" height="95" />
+<rect class="bar" data-hour="21" fill="#82aaff" x="245.145" y="30" width="10.456" height="70" />
+<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="15" width="10.456" height="85" />
+<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="2.5" width="10.456" height="97.5" />
 <text x="220" y="130" fill="#27e8a7" font-size="10">per day hour</text>
 </g>
 </svg>
