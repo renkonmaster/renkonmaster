@@ -2,7 +2,7 @@ name: Generate profile cards
 
 on:
   schedule:
-    - cron: "17 15 * * *"
+    - cron: "17 15 */3 * *"
   workflow_dispatch:
 
 permissions:
