@@ -11,14 +11,14 @@
 <text x="16.8" y="80.4" fill="#27e8a7" font-size="14">C</text>
 <rect y="93.6" width="14" height="14" fill="#3572A5" stroke="#242938" stroke-width="1" />
 <text x="16.8" y="105.6" fill="#27e8a7" font-size="14">Python</text>
-<rect y="118.8" width="14" height="14" fill="#3178c6" stroke="#242938" stroke-width="1" />
-<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">TypeScript</text>
+<rect y="118.8" width="14" height="14" fill="#f1e05a" stroke="#242938" stroke-width="1" />
+<text x="16.8" y="130.8" fill="#27e8a7" font-size="14">JavaScript</text>
 </g>
 <g transform="translate(230,120)">
-<g class="arc"><path d="M0,-60A60,60,0,0,1,57.063,18.541L33.287,10.816A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M57.063,18.541A60,60,0,0,1,0,60L0,35A35,35,0,0,0,33.287,10.816Z" fill="#41b883" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M0,60A60,60,0,0,1,-57.063,18.541L-33.287,10.816A35,35,0,0,0,0,35Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-57.063,18.541A60,60,0,0,1,-35.267,-48.541L-20.572,-28.316A35,35,0,0,0,-33.287,10.816Z" fill="#3572A5" stroke="#242938" stroke-width="2" /></g>
-<g class="arc"><path d="M-35.267,-48.541A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-20.572,-28.316Z" fill="#3178c6" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M0,-60A60,60,0,0,1,59.389,8.539L34.644,4.981A35,35,0,0,0,0,-35Z" fill="#00ADD8" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M59.389,8.539A60,60,0,0,1,16.904,57.57L9.861,33.582A35,35,0,0,0,34.644,4.981Z" fill="#41b883" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M16.904,57.57A60,60,0,0,1,-45.345,39.292L-26.451,22.92A35,35,0,0,0,9.861,33.582Z" fill="#555555" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-45.345,39.292A60,60,0,0,1,-54.578,-24.925L-31.837,-14.54A35,35,0,0,0,-26.451,22.92Z" fill="#3572A5" stroke="#242938" stroke-width="2" /></g>
+<g class="arc"><path d="M-54.578,-24.925A60,60,0,0,1,0,-60L0,-35A35,35,0,0,0,-31.837,-14.54Z" fill="#f1e05a" stroke="#242938" stroke-width="2" /></g>
 </g>
 </svg>
