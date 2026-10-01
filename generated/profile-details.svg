@@ -11,16 +11,16 @@
 <text x="21" y="70" fill="#27e8a7" font-size="14">Joined GitHub 4 years ago</text>
 </g>
 <g transform="translate(295,50)" color="#82aaff">
-<path class="contribution-area" transform="translate(-30,0)" stroke="#82aaff" fill="#82aaff" opacity="1" d="M0,104.5C10.411,91.781,20.822,79.063,31.233,79.063C41.991,79.063,52.749,80.667,63.507,83.875C73.918,86.98,84.329,103.125,94.74,103.125C105.498,103.125,116.256,81.813,127.014,81.813C137.772,81.813,148.53,90.75,159.288,90.75C169.005,90.75,178.721,4.125,188.438,4.125C199.196,4.125,209.954,110,220.712,110C231.123,110,241.534,106.333,251.945,99C262.703,91.422,273.461,30.938,284.219,30.938C294.63,30.938,305.041,74.938,315.452,74.938C326.21,74.938,336.968,71.042,347.726,63.25C358.484,55.458,369.242,40.104,380,24.75L380,110L0,110Z" />
+<path class="contribution-area" transform="translate(-30,0)" stroke="#82aaff" fill="#82aaff" opacity="1" d="M0,104.5C9.62,91.781,19.241,79.063,28.861,79.063C38.802,79.063,48.743,80.667,58.684,83.875C68.304,86.98,77.924,103.125,87.544,103.125C97.485,103.125,107.426,81.813,117.367,81.813C127.308,81.813,137.249,90.75,147.19,90.75C156.169,90.75,165.148,4.125,174.127,4.125C184.068,4.125,194.008,110,203.949,110C213.57,110,223.19,106.333,232.81,99C242.751,91.422,252.692,30.938,262.633,30.938C272.253,30.938,281.873,74.938,291.494,74.938C301.435,74.938,311.376,71.042,321.316,63.25C331.257,55.458,341.198,24.75,351.139,24.75C360.759,24.75,370.38,67.375,380,110L380,110L0,110Z" />
 <g transform="translate(-30,110)" color="#27e8a7" fill="none" font-size="10" text-anchor="middle">
 <path class="domain" stroke="currentColor" d="M0.5,6V0.5H380.5V6" />
 <g class="tick" transform="translate(0.5,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">25/09</text></g>
-<g class="tick" transform="translate(64.007,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">25/11</text></g>
-<g class="tick" transform="translate(127.514,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/01</text></g>
-<g class="tick" transform="translate(188.938,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/03</text></g>
-<g class="tick" transform="translate(252.445,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/05</text></g>
-<g class="tick" transform="translate(315.952,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/07</text></g>
-<g class="tick" transform="translate(380.5,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/09</text></g>
+<g class="tick" transform="translate(59.184,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">25/11</text></g>
+<g class="tick" transform="translate(117.867,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/01</text></g>
+<g class="tick" transform="translate(174.627,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/03</text></g>
+<g class="tick" transform="translate(233.31,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/05</text></g>
+<g class="tick" transform="translate(291.994,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/07</text></g>
+<g class="tick" transform="translate(351.639,0)"><line stroke="currentColor" y2="6" /><text fill="currentColor" y="9" dy="0.71em">26/09</text></g>
 </g>
 <g transform="translate(350,0)" color="#27e8a7" fill="none" font-size="10" text-anchor="start">
 <path class="domain" stroke="currentColor" d="M6,110.5H0.5V0.5H6" />
