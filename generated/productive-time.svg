@@ -31,8 +31,8 @@
 <rect class="bar" data-hour="9" fill="#82aaff" x="105.726" y="73.333" width="10.456" height="26.667" />
 <rect class="bar" data-hour="10" fill="#82aaff" x="117.344" y="55.556" width="10.456" height="44.444" />
 <rect class="bar" data-hour="11" fill="#82aaff" x="128.963" y="37.778" width="10.456" height="62.222" />
-<rect class="bar" data-hour="12" fill="#82aaff" x="140.581" y="17.778" width="10.456" height="82.222" />
-<rect class="bar" data-hour="13" fill="#82aaff" x="152.199" y="33.333" width="10.456" height="66.667" />
+<rect class="bar" data-hour="12" fill="#82aaff" x="140.581" y="24.444" width="10.456" height="75.556" />
+<rect class="bar" data-hour="13" fill="#82aaff" x="152.199" y="35.556" width="10.456" height="64.444" />
 <rect class="bar" data-hour="14" fill="#82aaff" x="163.817" y="6.667" width="10.456" height="93.333" />
 <rect class="bar" data-hour="15" fill="#82aaff" x="175.436" y="15.556" width="10.456" height="84.444" />
 <rect class="bar" data-hour="16" fill="#82aaff" x="187.054" y="35.556" width="10.456" height="64.444" />
@@ -41,8 +41,8 @@
 <rect class="bar" data-hour="19" fill="#82aaff" x="221.909" y="44.444" width="10.456" height="55.556" />
 <rect class="bar" data-hour="20" fill="#82aaff" x="233.527" y="62.222" width="10.456" height="37.778" />
 <rect class="bar" data-hour="21" fill="#82aaff" x="245.145" y="40" width="10.456" height="60" />
-<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="26.667" width="10.456" height="73.333" />
-<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="15.556" width="10.456" height="84.444" />
+<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="28.889" width="10.456" height="71.111" />
+<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="17.778" width="10.456" height="82.222" />
 <text x="220" y="130" fill="#27e8a7" font-size="10">per day hour</text>
 </g>
 </svg>
