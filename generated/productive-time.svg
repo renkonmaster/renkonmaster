@@ -39,10 +39,10 @@
 <rect class="bar" data-hour="17" fill="#82aaff" x="198.672" y="50" width="10.456" height="50" />
 <rect class="bar" data-hour="18" fill="#82aaff" x="210.29" y="20" width="10.456" height="80" />
 <rect class="bar" data-hour="19" fill="#82aaff" x="221.909" y="40" width="10.456" height="60" />
-<rect class="bar" data-hour="20" fill="#82aaff" x="233.527" y="60" width="10.456" height="40" />
-<rect class="bar" data-hour="21" fill="#82aaff" x="245.145" y="40" width="10.456" height="60" />
-<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="20" width="10.456" height="80" />
-<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="12.5" width="10.456" height="87.5" />
+<rect class="bar" data-hour="20" fill="#82aaff" x="233.527" y="62.5" width="10.456" height="37.5" />
+<rect class="bar" data-hour="21" fill="#82aaff" x="245.145" y="37.5" width="10.456" height="62.5" />
+<rect class="bar" data-hour="22" fill="#82aaff" x="256.763" y="17.5" width="10.456" height="82.5" />
+<rect class="bar" data-hour="23" fill="#82aaff" x="268.382" y="15" width="10.456" height="85" />
 <text x="220" y="130" fill="#27e8a7" font-size="10">per day hour</text>
 </g>
 </svg>
